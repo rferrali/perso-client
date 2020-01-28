@@ -1,0 +1,55 @@
+<div class="container">
+
+  <div class="row mb-1 mt-3">
+    <div class="col">
+      <h3 class="float-left pull-left my-0">Software</h3>
+      <div *ngIf="! auth.preview" class="pull-right float-right">
+        <div class="btn-group">
+          <button class="btn btn-danger" (click)="onDelete()" [disabled]="sortMode || editMode || createMode">
+            <i class="fa fa-trash"></i>
+            <span *ngIf="deleteMode">&nbsp; Done</span>
+          </button>
+          <button class="btn btn-dark" (click)="onSort()" [disabled]="deleteMode || editMode || createMode">
+            <i class="fa fa-sort"></i>
+            <span *ngIf="sortMode">&nbsp; Done</span>
+          </button>
+          <button class="btn btn-dark" (click)="onCreate()"
+            [disabled]="sortMode || deleteMode || createMode || editMode">
+            <i class="fa fa-plus"></i>
+            <span *ngIf="!(sortMode || deleteMode)">&nbsp; New software</span>
+          </button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col">
+
+      <div *ngIf="!sortMode; else sortBlock">
+        <div *ngFor="let software of softwares" class="mt-1">
+          <app-software [software]="software" [disableEdit]="disableEdit" [editMode]="false" [deleteMode]="deleteMode"
+            (isEditMode)="onEdit($event)" (deleteEvent)="onDeleteEvent($event)"></app-software>
+        </div>
+        <div *ngIf="createMode" class="mt-1">
+          <app-software [software]="newSoftware" [disableEdit]="disableEdit" [editMode]="true" [deleteMode]="deleteMode"
+            (isEditMode)="onEdit($event)" (deleteEvent)="onDeleteEvent($event)"></app-software>
+        </div>
+      </div>
+
+      <ng-template #sortBlock>
+        <bs-sortable [(ngModel)]="softwares" [itemTemplate]="itemTemplate" itemClass="sortable-item mt-1"
+          itemActiveClass="sortable-item-active" placeholderItem="" placeholderClass="placeholderStyle"
+          wrapperClass="sortable-wrapper list-group">
+        </bs-sortable>
+        <ng-template #itemTemplate let-item="item" let-index="index">
+          <app-software [software]="item.value" [disableEdit]="true" [editMode]="false" [deleteMode]="false">
+          </app-software>
+        </ng-template>
+      </ng-template>
+
+
+    </div>
+  </div>
+</div>

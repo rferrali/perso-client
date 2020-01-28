@@ -1,0 +1,46 @@
+<app-messages></app-messages>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 mb-5">
+      <h4>About
+          <button *ngIf="! auth.preview" type="button" class="btn btn-dark ml-3 pull-right float-right" 
+          (click)="editMode = !editMode"><i class="fa fa-edit"></i></button>
+      </h4>
+      <hr>
+      <div *ngIf="!editMode; else editBlock">
+          <p [innerHTML]="me.about"></p>
+          <a class="btn btn-primary btn-lg" href="{{ me.cv }}" target="_blank">Download my CV &raquo;</a>
+      </div>
+      <ng-template #editBlock>
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <textarea class="form-control" formControlName="about" rows="12" placeholder="Tell us more about you, {{ me.first_name }}."></textarea>
+          </div>
+          <div class="btn-toolbar">
+            <div class="input-group input-group-lg mr-2">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="cv"><i class="fa fa-file-pdf mr-1"></i> CV</label>
+                  </div>
+                  <select class="custom-select" id="cv" formControlName="cv">
+                      <option *ngFor="let file of store.files | async" [value]="file.url">
+                          {{file.name}}
+                        </option>
+                  </select>
+            </div>
+            <div class="btn-group btn-group-lg">
+                <button type="button" class="btn btn-outline-dark" (click)="onCancel()"><i class="fa fa-times"></i> Cancel</button>
+                <button type="submit" class="btn btn-dark" [disabled]="form.invalid"><i class="fa fa-save"></i> Save</button>
+            </div>
+          </div>
+        </form>
+      </ng-template>
+    </div>
+    <div class="col-md-4 mb-5">
+        <app-contact></app-contact>
+    </div>
+  </div>
+  <!-- /.row -->
+
+  <app-keywords></app-keywords>
+</div>

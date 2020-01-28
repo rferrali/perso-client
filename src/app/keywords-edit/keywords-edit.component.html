@@ -1,0 +1,31 @@
+<div *ngIf="editMode; then editBlock; else displayBlock"></div>
+
+
+<ng-template #displayBlock>
+  <div *ngIf="keywords.length > 0" class="mb-2">
+    <span *ngFor="let keyword of keywords; index as i">
+      <span *ngIf="test(keyword); else noMatch">
+          <a routerLink="/research" class="btn btn-sm mr-1 btn-primary">
+            <i [class]="keyword.icon"></i> {{ keyword.keyword }}
+          </a>
+      </span>
+      <ng-template #noMatch>
+          <a routerLink="/research/{{ keyword.slug }}" class="btn btn-sm mr-1 btn-outline-primary">
+            <i [class]="keyword.icon"></i> {{ keyword.keyword }}
+          </a>
+      </ng-template>
+    </span>
+  </div>
+</ng-template>
+
+<ng-template #editBlock>
+  <div [formGroup]="keywordsForm" class="form-group">
+    Keywords: 
+    <div *ngFor="let keyword of allKeywords; let i=index" class="form-check form-check-inline">
+      <input class="form-check-input" type="checkbox" [formControlName]="i">
+      <label class="form-check-label">
+          <i [class]="keyword.icon"></i> {{ keyword.keyword }}
+      </label>
+    </div>
+  </div>
+</ng-template>

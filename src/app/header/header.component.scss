@@ -1,0 +1,39 @@
+@import "../../styles.scss";
+
+.bg-picture {
+    background-image: 
+        url("../../assets/img/header.jpg"), 
+        url('../../assets/img/filler-left.jpg');
+    background-position: right bottom, left; 
+    background-repeat: no-repeat, repeat;
+}
+
+header {
+    display: flex;
+}
+
+.bg-left {
+    background-image: url('../../assets/img/filler-left.jpg'); 
+    flex-grow: 100; 
+    /* background-repeat: repeat, no-repeat, repeat; */
+}
+
+.bg-right {
+    background-image: url('../../assets/img/filler-right.jpg'); 
+    flex-grow: 100; 
+}
+
+.my-container {
+    margin: 0 !important;  
+}
+
+a {
+    color: $body-color; 
+}
+
+a:hover {
+    color: $body-color; 
+    text-decoration: none;
+}
+
+  

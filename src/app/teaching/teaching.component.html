@@ -1,0 +1,50 @@
+<app-messages></app-messages>
+
+<div class="container">
+  <div class="row mb-5">
+    <div class="col">
+      <div *ngIf="! auth.preview" class="text-right mb-3">
+        <div class="btn-group">
+          <button class="btn btn-danger" (click)="onDelete()" [disabled]="sortMode || editMode || createMode">
+            <i class="fa fa-trash"></i>
+            <span *ngIf="deleteMode">&nbsp; Done</span>
+          </button>
+          <button class="btn btn-dark" (click)="onSort()" [disabled]="deleteMode || editMode || createMode">
+            <i class="fa fa-sort"></i>
+            <span *ngIf="sortMode">&nbsp; Done</span>
+          </button>
+          <button class="btn btn-dark" (click)="onCreate()"
+            [disabled]="sortMode || deleteMode || createMode || editMode">
+            <i class="fa fa-plus"></i>
+            <span *ngIf="!(sortMode || deleteMode)">&nbsp; New course</span>
+          </button>
+
+        </div>
+      </div>
+
+      <div *ngIf="!sortMode; else sortBlock">
+        <div *ngFor="let course of courses" class="mt-1">
+          <app-course [course]="course" [disableEdit]="disableEdit" [editMode]="false" [deleteMode]="deleteMode"
+            (isEditMode)="onEdit($event)" (deleteEvent)="onDeleteEvent($event)"></app-course>
+        </div>
+        <div *ngIf="createMode" class="mt-1">
+          <app-course [course]="newCourse" [disableEdit]="disableEdit" [editMode]="true" [deleteMode]="deleteMode"
+            (isEditMode)="onEdit($event)" (deleteEvent)="onDeleteEvent($event)"></app-course>
+        </div>
+      </div>
+
+      <ng-template #sortBlock>
+        <bs-sortable [(ngModel)]="courses" [itemTemplate]="itemTemplate" itemClass="sortable-item mt-1"
+          itemActiveClass="sortable-item-active" placeholderItem="" placeholderClass="placeholderStyle"
+          wrapperClass="sortable-wrapper list-group">
+        </bs-sortable>
+        <ng-template #itemTemplate let-item="item" let-index="index">
+          <app-course [course]="item.value" [disableEdit]="true" [editMode]="false" [deleteMode]="false">
+          </app-course>
+        </ng-template>
+      </ng-template>
+
+
+    </div>
+  </div>
+</div>

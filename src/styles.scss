@@ -1,0 +1,49 @@
+
+// body {
+//   padding-top: 56px;
+// }
+
+.custom-drop-zone {
+    height: 100%; 
+}
+
+.custom-drop-zone-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    /* bring your own prefixes */
+    transform: translate(-50%, -50%);
+    color: white; 
+    text-align: center;
+}
+
+.custom-modal {
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.9); /* Black w/ opacity */
+  }
+
+  .bad-feedback {
+    font-size: 80%;
+    color: #dc3545;
+  }
+
+  .my-code {
+    font-family: SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace; 
+  }
+
+
+  $theme-colors: (
+  "primary": #AD5565
+);
+
+
+
+
+@import "../node_modules/bootstrap/scss/bootstrap.scss";

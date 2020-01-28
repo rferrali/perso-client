@@ -1,0 +1,48 @@
+<div class="card">
+    <div class="card-body">
+      <div *ngIf="!editMode; then displayBlock; else editBlock">
+  
+      </div>
+    </div>
+  </div>
+  
+  <ng-template #displayBlock>
+    <div *ngIf="! auth.preview">
+        <button *ngIf="!disableEdit" class="btn btn-dark float-right pull-right" type="button" (click)="enableEdit()">
+            <i class="fa fa-edit"></i>
+          </button>
+          <button *ngIf="deleteMode" class="btn btn-danger btn-outline float-right pull-right" type="button"
+            (click)="onDelete(dataset)">
+            <i class="fa fa-trash"></i>
+          </button>
+    </div>
+    <div [innerHtml]="dataset.description"></div>
+  </ng-template>
+  
+  
+  <ng-template #editBlock>
+      <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
+
+          <div class="form-group">
+              <textarea class="form-control" rows=5 formControlName="description" placeholder="Details"></textarea>
+            </div>
+            <div *ngIf="editForm.get('description').invalid && editForm.get('description').touched" class="bad-feedback">
+                The devil is in the details. 
+            </div>
+    
+        <div class="mt-3 clearfix">
+          <div class="btn-group">
+            <button class="btn btn-outline-primary" type="button" (click)="onCancel()">
+              <i class="fa fa-times"></i> Cancel
+            </button>
+            <button class="btn btn-outline-primary" type="button" (click)="onRestore()">
+              <i class="fa fa-history"></i> Restore
+            </button>
+            <button class="btn btn-primary" type="submit" [disabled]="editForm.invalid">
+              <i class="fa fa-save"></i> Save
+            </button>
+          </div>
+        </div>
+      </form>
+    
+    </ng-template>

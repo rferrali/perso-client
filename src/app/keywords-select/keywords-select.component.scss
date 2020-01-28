@@ -1,0 +1,17 @@
+@import "../../styles.scss";
+
+.icon {
+    fill: white !important; 
+}
+
+.icon-outline {
+    fill: map-get($theme-colors, "primary") !important; 
+}
+
+button:hover .icon-outline {
+    fill: white !important; 
+}
+
+button:hover .icon {
+    fill: white !important; 
+}

@@ -1,0 +1,45 @@
+
+<nav class="navbar navbar-expand-lg navbar-light mb-4 border-top border-bottom">
+  <div class="container">
+    <!-- <a class="navbar-brand" href="#">Romain Ferrali</a> -->
+    <button class="navbar-toggler border-0" type="button" (click)="isCollapsed = !isCollapsed" aria-controls="navbarResponsive"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span> Menu
+    </button>
+    <div class="collapse navbar-collapse" [collapse]="isCollapsed">
+      
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/research" routerLinkActive="active">Research</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/teaching" routerLinkActive="active">Teaching</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/data" routerLinkActive="active">Software & Data</a>
+        </li>
+        <li *ngIf="user" class="nav-item">
+            <a class="nav-link" [class.active]="auth.preview" href="javascript:;" (click)="auth.togglePreview()">
+               Preview 
+               <i class="fa" [ngClass]="auth.preview ? 'fa-toggle-on' : 'fa-toggle-off'"></i>
+            </a>
+          </li>
+        <li *ngIf="user" class="nav-item">
+          <a class="nav-link" routerLink="/admin" routerLinkActive="active">
+            <i class="fa fa-cog"></i>
+          </a>
+        </li>
+        <li *ngIf="user" class="nav-item">
+          <a class="nav-link" href="#" (click)="logout($event)">
+            <i class="fa fa-power-off"></i>
+          </a>
+        </li>
+      </ul>
+      
+    </div>
+  </div>
+</nav>

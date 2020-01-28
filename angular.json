@@ -5,7 +5,11 @@
   "projects": {
     "my-app": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+        "styleext": "scss"
+      }
+  }, 
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -24,7 +28,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              
+              "src/styles.scss"
             ],
             "scripts": []
           },
@@ -84,9 +89,13 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              
+              "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/autosize/src/autosize.js"
+            ]
           }
         },
         "lint": {
@@ -115,6 +124,7 @@
           }
         }
       }
-    }},
+    }
+  },
   "defaultProject": "my-app"
 }

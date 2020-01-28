@@ -1,0 +1,36 @@
+<form [formGroup]="editForm" class="form-inline" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <input type="text" class="form-control mr-2 mt-2" placeholder="First name" formControlName="first_name" required>
+    
+    <input type="text" class="form-control mr-2 mt-2" placeholder="Last name" formControlName="last_name" required>
+    <div class="input-group mr-2 mt-2">
+      <div class="input-group-prepend">
+        <div class="input-group-text"><i class="fa fa-link"></i></div>
+      </div>
+      <input type="text" class="form-control" placeholder="URL" formControlName="url" required>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="btn-group mr-2 mt-2">
+        <button type="button" class="btn btn-outline-primary" (click)="onCancel()">
+            <i class="fa fa-times"></i> Cancel
+          </button>
+          <button type="submit" class="btn btn-primary" [disabled]="editForm.invalid">
+            <i class="fa fa-save"></i>
+              Save
+          </button>
+    </div>
+  </div>
+</form>
+
+<div class="form-group">
+    <div *ngIf="editForm.get('first_name').invalid && editForm.get('first_name').touched" class="bad-feedback">
+        Everybody has a first name.
+      </div>
+  <div *ngIf="editForm.get('last_name').invalid && editForm.get('last_name').touched" class="bad-feedback">
+    Everybody has a last name.
+  </div>
+  <div *ngIf="editForm.get('url').invalid && editForm.get('url').touched" class="bad-feedback">
+    Everybody has some kind of website.
+  </div>
+</div>

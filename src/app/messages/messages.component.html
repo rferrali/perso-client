@@ -1,0 +1,13 @@
+<div *ngIf="messageService.messages.length">
+  <div class="alerts">
+  <!-- <div class="row">
+    <div class="column"> -->
+      <div *ngFor="let message of messageService.messages">
+        <alert [type]="message.type" [dismissible]="true" (onClosed)="onClosed(message)">
+          {{ message.message }}
+        </alert>
+      </div>
+    <!-- </div>
+  </div> -->
+</div>
+</div>

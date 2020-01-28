@@ -1,0 +1,117 @@
+<span *ngIf="editMode; then editBlock; else displayBlock"></span>
+
+
+<ng-template #displayBlock>
+  <span>
+    <span class="mr-1" *ngFor="let button of obtns">
+      <a class="btn btn-sm btn-primary" href="{{ button.content }}" target="_blank" [eventTracker]='{"category":"button","action":button.content}'>
+        <i class="{{ button.icon }}"></i> {{ button.label }}
+      </a>
+    </span>
+  </span>
+</ng-template>
+
+<ng-template #editBlock>
+  <div>
+    <div *ngIf="!buttonMode; else editButtonsView">
+      <div>
+        <span class="mr-1" *ngFor="let button of buttons.value">
+          <a class="btn btn-sm btn-primary" href="{{ button.content }}" target="_blank">
+            <i class="{{ button.icon }}"></i> {{ button.label }}
+          </a>
+        </span>
+        <button type="button" class="btn btn-sm btn-outline-dark pull-right float-right"
+          (click)="buttonMode = !buttonMode">
+          <i class="fa fa-edit"></i>
+        </button>
+      </div>
+    </div>
+
+
+    <ng-template #editButtonsView>
+      <div class="clearfix">
+        <!-- Buttons, sortable -->
+        <bs-sortable [(ngModel)]="sortableButtons" [ngModelOptions]="{standalone: true}" [itemTemplate]="buttonTemplate"
+          itemClass="sortable-item pull-left float-left mr-1 mb-1" itemActiveClass="sortable-item-active"
+          placeholderItem="" placeholderClass="placeholderStyle" wrapperClass="sortable-wrapper"
+          (onChange)="sortButtons($event)">
+        </bs-sortable>
+        <button type="button" class="btn btn-sm btn-outline-dark pull-right float-right"
+          (click)="buttonMode = !buttonMode">
+          <i class="fa fa-edit"></i>
+        </button>
+      </div>
+      <!-- 1 button template -->
+      <ng-template #buttonTemplate let-item="item" let-index="index">
+        <button type="button" class="btn btn-sm btn-primary">
+          <i class="{{item.value.icon}}"></i> {{item.value.label}}
+          &nbsp;<span (click)="deleteButton(index)"><i class="fa fa-times-circle"></i></span>
+        </button>&nbsp;
+      </ng-template>
+      <!-- Add button -->
+      <div class="mt-2" *ngIf="!showButton">
+        <button class="btn btn-outline-primary btn-sm" (click)="showAddButton()" type="button">
+          <i class="fa fa-plus"></i> New button
+        </button>
+      </div>
+
+
+      <!-- Add button form -->
+      <div *ngIf="showButton" class="form-group mt-4 ml-4 mr-4">
+        <div [formGroup]="btns">
+          <div formGroupName="newButton">
+            <h6>New button</h6>
+            <div class="form-group">
+              <label for="newButton-icon">Icon. Check <a href="https://fontawesome.com/icons"
+                  target="_blank">fontawesome</a>!</label>
+              <input type="text" class="form-control form-control-sm" id="newButton-icon" formControlName="icon">
+              <div *ngIf="newButton.get('icon').invalid && newButton.get('icon').touched" class="bad-feedback">
+                Every button deserves an icon.
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="newButton-label">Label</label>
+              <input type="text" class="form-control form-control-sm" id="newButton-label" formControlName="label">
+              <div *ngIf="newButton.get('label').invalid && newButton.get('label').touched" class="bad-feedback">
+                Give that button a name.
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="newButton-content">Content</label>
+              <div class="input-group" [ngSwitch]="type">
+                <div class="input-group-prepend" btnRadioGroup formControlName="type">
+                  <label class="btn btn-outline-primary btn-sm" btnRadio="0" tabindex="0" role="button">
+                    <i class="fa fa-link"></i>
+                  </label>
+                  <label class="btn btn-outline-primary btn-sm" btnRadio="1" tabindex="0" role="button">
+                    <i class="fa fa-file"></i>
+                  </label>
+                </div>
+                <input *ngSwitchCase="0" type="text" class="form-control form-control-sm" id="newButton-content"
+                  [ngClass]="{'is-invalid': newButton.errors?.requiredType && newButton.touched}" formControlName="url">
+                <select *ngSwitchCase="1" class="form-control form-control-sm" id="newButton-content"
+                  [ngClass]="{'is-invalid': newButton.errors?.requiredType && newButton.touched}"
+                  formControlName="file">
+                  <option *ngFor="let file of store.files | async" [value]="file.url">
+                    {{file.name}}
+                  </option>
+                </select>
+              </div>
+              <div *ngIf="newButton.errors?.requiredType && newButton.touched" class="bad-feedback">
+                You need to give that button something to do.
+              </div>
+            </div>
+          </div>
+          <div class="btn-group">
+            <button class="btn btn-outline-primary" type="button" (click)="onCancelButton()">
+              <i class="fa fa-times"></i> Cancel
+            </button>
+            <button class="btn btn-primary" type="button" (click)="addButton()" [disabled]="newButton.invalid">
+              <i class="fa fa-plus"></i> Add
+            </button>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</ng-template>

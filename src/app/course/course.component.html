@@ -1,0 +1,123 @@
+<div class="card">
+  <div class="card-body">
+    <div *ngIf="!editMode; then displayBlock; else editBlock">
+
+    </div>
+  </div>
+</div>
+
+<ng-template #displayBlock>
+  <h5 class="card-title">
+    {{course.name}}
+    <span *ngIf="! auth.preview">
+      <button *ngIf="!disableEdit" class="btn btn-dark float-right pull-right" type="button" (click)="enableEdit()">
+        <i class="fa fa-edit"></i>
+      </button>
+      <button *ngIf="deleteMode" class="btn btn-danger btn-outline float-right pull-right" type="button"
+        (click)="onDelete(course)">
+        <i class="fa fa-trash"></i>
+      </button>
+    </span>
+    
+
+  </h5>
+  <div class="clearfix">
+    <span class="float-left pull-left">{{ course.term }}. {{ course.level }}. {{ course.role }} </span>
+    <span *ngIf="course.people.length > 0" class="ml-1 mr-1 float-left pull-left">for</span>
+    <app-people-edit [people]="course.people" [editMode]="editMode" [peopleForm]="people"
+      [sortablePeople]="sortablePeople" [otherPeople]="otherPeople">
+    </app-people-edit>
+  </div>
+  <div class="clearfix">
+    <span class="mr-1 float-left pull-left">
+      <a class="btn btn-sm btn-primary" href="javascript:;" (click)="showDetails = !showDetails">
+        <i class="fa fa-plus"></i> Details</a>
+    </span>
+    <app-buttons [btns]="btns" [obtns]="course.buttons" [sortableButtons]="sortableButtons" [editMode]="editMode">
+    </app-buttons>
+  </div>
+  <p class="card-text mt-2" [collapse]="!showDetails">
+    {{ course.details }}
+  </p>
+</ng-template>
+
+
+
+<ng-template #editBlock>
+  <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
+    <h5 class="card-title">
+      <input class="form-control form-control-lg" type="text" formControlName="name" placeholder="Name" required>
+      <div *ngIf="editForm.get('name').invalid && editForm.get('name').touched" class="bad-feedback">
+        You must have taught <i>something</i>. 
+      </div>
+
+    </h5>
+    <div class="form-group">
+      <label for="term">Term</label>
+      <input type="text" class="form-control" name="term" formControlName="term" placeholder="Term">
+      <div *ngIf="editForm.get('term').invalid && editForm.get('term').touched" class="bad-feedback">
+          You must have taught <i>sometime</i>. 
+      </div>
+    </div>
+    <div class="form-group">
+        <label for="term">Role</label>
+        <input type="text" class="form-control" name="role" formControlName="role" placeholder="Term">
+        <div *ngIf="editForm.get('role').invalid && editForm.get('role').touched" class="bad-feedback">
+            What were you doing? 
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="mr-2">Level</label>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" formControlName="level" id="undergrad" value="Undergraduate">
+            <label class="form-check-label" for="undergrad">Undergraduate</label>
+          </div>
+          <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" formControlName="level" id="grad" value="Graduate">
+              <label class="form-check-label" for="grad">Graduate</label>
+            </div>
+            <div *ngIf="editForm.get('level').invalid && editForm.get('level').touched" class="bad-feedback">
+                You must have taught <i>someone</i>. 
+            </div>
+    </div>
+
+    <div class="clearfix">
+        <span>For</span>
+        <app-people-edit [people]="course.people" [editMode]="editMode" [peopleForm]="people"
+          [sortablePeople]="sortablePeople" [otherPeople]="otherPeople">
+        </app-people-edit>
+    </div>
+
+    <div class="clearfix">
+      <span class="mr-1">
+        <a class="btn btn-sm btn-primary" href="javascript:;" (click)="showDetails = !showDetails">
+          <i class="fa fa-plus"></i> Details</a>
+      </span>
+      <app-buttons [btns]="btns" [obtns]="course.buttons" [sortableButtons]="sortableButtons" [editMode]="editMode">
+      </app-buttons>
+    </div>
+
+
+    <div class="form-group mt-3" [collapse]="!showDetails">
+      <textarea class="form-control" rows=5 formControlName="details" placeholder="Details"></textarea>
+    </div>
+    <div *ngIf="editForm.get('details').invalid && editForm.get('details').touched" class="bad-feedback">
+        Tell me more about your teaching. 
+    </div>
+
+    <div class="mt-3 clearfix">
+      <div class="btn-group">
+        <button class="btn btn-outline-primary" type="button" (click)="onCancel()">
+          <i class="fa fa-times"></i> Cancel
+        </button>
+        <button class="btn btn-outline-primary" type="button" (click)="onRestore()">
+          <i class="fa fa-history"></i> Restore
+        </button>
+        <button class="btn btn-primary" type="submit" [disabled]="editForm.invalid">
+          <i class="fa fa-save"></i> Save
+        </button>
+      </div>
+    </div>
+  </form>
+
+</ng-template>

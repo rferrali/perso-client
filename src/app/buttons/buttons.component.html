@@ -49,69 +49,62 @@
         </button>&nbsp;
       </ng-template>
       <!-- Add button -->
-      <div class="mt-2" *ngIf="!showButton">
-        <button class="btn btn-outline-primary btn-sm" (click)="showAddButton()" type="button">
+      <div class="mt-2">
+        <button class="btn btn-outline-primary btn-sm" (click)="showAddButton()" type="button" *ngIf="!showButton">
           <i class="fa fa-plus"></i> New button
         </button>
+        <div *ngIf="showButton" style="width: 100%;">
+          <div [formGroup]="btns">
+            <div formGroupName="newButton">
+              <div class="form-inline">
+                <div class="form-group mr-2">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <button class="btn btn-outline-primary btn-sm" type="button" [icon]="newButton.get('icon').value" (select)="onIconPick($event)" app-icon-picker></button>
+                    </div>
+                    <input type="text" class="form-control form-control-sm" formControlName="label" placeholder="Label">
+                  </div>
+                </div>
+                <div class="form-group mr-2">
+                  <div class="input-group" [ngSwitch]="type">
+                    <div class="input-group-prepend" btnRadioGroup formControlName="type">
+                      <label class="btn btn-outline-primary btn-sm" btnRadio="0" tabindex="0" role="button">
+                        <i class="fa fa-link"></i>
+                      </label>
+                      <label class="btn btn-outline-primary btn-sm" btnRadio="1" tabindex="0" role="button">
+                        <i class="fa fa-file"></i>
+                      </label>
+                    </div>
+                    <input *ngSwitchCase="0" type="text" class="form-control form-control-sm" id="newButton-content"
+                      [ngClass]="{'is-invalid': newButton.errors?.requiredType && newButton.touched}" formControlName="url" placeholder="http://youre-awesome.com">
+                    <select *ngSwitchCase="1" class="form-control form-control-sm" id="newButton-content"
+                      [ngClass]="{'is-invalid': newButton.errors?.requiredType && newButton.touched}"
+                      formControlName="file">
+                      <option *ngFor="let file of store.files | async" [value]="file.url">
+                        {{file.name}}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="btn-group">
+                    <button class="btn btn-sm btn-outline-primary" type="button" (click)="onCancelButton()">
+                      <i class="fa fa-times"></i> Cancel
+                    </button>
+                    <button class="btn btn-sm btn-primary" type="button" (click)="addButton()" [disabled]="newButton.invalid">
+                      <i class="fa fa-plus"></i> Add button
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
 
       <!-- Add button form -->
-      <div *ngIf="showButton" class="form-group mt-4 ml-4 mr-4">
-        <div [formGroup]="btns">
-          <div formGroupName="newButton">
-            <h6>New button</h6>
-            <div class="form-group">
-              <label for="newButton-icon">Icon. Check <a href="https://fontawesome.com/icons"
-                  target="_blank">fontawesome</a>!</label>
-              <input type="text" class="form-control form-control-sm" id="newButton-icon" formControlName="icon">
-              <div *ngIf="newButton.get('icon').invalid && newButton.get('icon').touched" class="bad-feedback">
-                Every button deserves an icon.
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="newButton-label">Label</label>
-              <input type="text" class="form-control form-control-sm" id="newButton-label" formControlName="label">
-              <div *ngIf="newButton.get('label').invalid && newButton.get('label').touched" class="bad-feedback">
-                Give that button a name.
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="newButton-content">Content</label>
-              <div class="input-group" [ngSwitch]="type">
-                <div class="input-group-prepend" btnRadioGroup formControlName="type">
-                  <label class="btn btn-outline-primary btn-sm" btnRadio="0" tabindex="0" role="button">
-                    <i class="fa fa-link"></i>
-                  </label>
-                  <label class="btn btn-outline-primary btn-sm" btnRadio="1" tabindex="0" role="button">
-                    <i class="fa fa-file"></i>
-                  </label>
-                </div>
-                <input *ngSwitchCase="0" type="text" class="form-control form-control-sm" id="newButton-content"
-                  [ngClass]="{'is-invalid': newButton.errors?.requiredType && newButton.touched}" formControlName="url">
-                <select *ngSwitchCase="1" class="form-control form-control-sm" id="newButton-content"
-                  [ngClass]="{'is-invalid': newButton.errors?.requiredType && newButton.touched}"
-                  formControlName="file">
-                  <option *ngFor="let file of store.files | async" [value]="file.url">
-                    {{file.name}}
-                  </option>
-                </select>
-              </div>
-              <div *ngIf="newButton.errors?.requiredType && newButton.touched" class="bad-feedback">
-                You need to give that button something to do.
-              </div>
-            </div>
-          </div>
-          <div class="btn-group">
-            <button class="btn btn-outline-primary" type="button" (click)="onCancelButton()">
-              <i class="fa fa-times"></i> Cancel
-            </button>
-            <button class="btn btn-primary" type="button" (click)="addButton()" [disabled]="newButton.invalid">
-              <i class="fa fa-plus"></i> Add
-            </button>
-          </div>
-        </div>
-      </div>
+      
     </ng-template>
   </div>
 </ng-template>

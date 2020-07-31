@@ -100,4 +100,8 @@ export class ButtonsComponent implements OnInit {
     this.showButton = false; 
   }
 
+  onIconPick(e) {
+    this.newButton.get('icon').setValue(e);
+  }
+
 }

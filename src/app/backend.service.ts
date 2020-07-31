@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Person, Paper, File, User, Me, Course, Keyword, Software, Dataset } from './model'
 import { HttpEventType } from '@angular/common/http'; 
 import { map } from  'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -15,16 +16,17 @@ const httpOptions = {
 })
 export class BackendService {
 
-  private peopleUrl = 'https://server.rferrali.net/person';  
-  private papersUrl = 'https://server.rferrali.net/paper';  
-  private filesUrl = 'https://server.rferrali.net/file';  
-  private coursesUrl = 'https://server.rferrali.net/course';  
-  private loginUrl = 'https://server.rferrali.net/login';  
-  private meUrl = 'https://server.rferrali.net/me';  
-  private registerUrl = 'https://server.rferrali.net/register';  
-  private keywordsUrl = 'https://server.rferrali.net/keyword';  
-  private softwaresUrl = 'https://server.rferrali.net/software';  
-  private datasetsUrl = 'https://server.rferrali.net/dataset';  
+  private peopleUrl = `${environment.serverUrl}/person`;  
+  private papersUrl = `${environment.serverUrl}/paper`;  
+  private filesUrl = `${environment.serverUrl}/file`;  
+  private coursesUrl = `${environment.serverUrl}/course`;  
+  private loginUrl = `${environment.serverUrl}/login`;  
+  private meUrl = `${environment.serverUrl}/me`;  
+  private registerUrl = `${environment.serverUrl}/register`;  
+  private keywordsUrl = `${environment.serverUrl}/keyword`;  
+  private softwaresUrl = `${environment.serverUrl}/software`;  
+  private datasetsUrl = `${environment.serverUrl}/dataset`;  
+  private iconsUrl = `${environment.serverUrl}/icons`;  
 
   constructor(
     private http: HttpClient
@@ -222,11 +224,8 @@ export class BackendService {
           let file = event.body as File; 
           return { type: 'file', file: file } ; 
         
-          default:
-              // throw 'tcha mere';
-              return { type: 'unhandled' };  
-              // return `Unhandled event: ${event.type}`;
-              // return Error('tcha mere'); 
+        default:
+            return { type: 'unhandled' };  
     
       }
     }));
@@ -266,5 +265,13 @@ export class BackendService {
     return this.http.delete<Dataset>(url, httpOptions);
   }
 
+
+  ////////////////////////////////////
+  //////////// ICONS ////////////////
+  ////////////////////////////////////
+
+  getIcons(): Observable<string[]> {
+    return this.http.get<string[]>(this.iconsUrl);
+  }
 
 }

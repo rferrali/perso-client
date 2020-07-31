@@ -1,0 +1,20 @@
+<ng-container>
+      <i [class]="displayIcon" triggers="" [popover]="popTemplate" [isOpen]="isOpen"></i>
+</ng-container>
+<ng-template #popTemplate>
+  <div style="width: 131px;">
+    <div style="display: grid; grid-template-columns: 33% 33% auto;">
+      <div *ngFor="let icon of icons" (click)="pick(icon)" class="icon-box">
+        <i [class]="icon" [class.fa-lg]="true"></i>
+      </div>
+    </div>
+    <form class="form-inline mt-1" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="input-group">
+        <input type="text" class="form-control form-control-sm" style="width: 100px" placeholder="fontawesome!" formControlName="icon">
+        <div class="input-group-append">
+          <button type="submit" class="btn btn-primary btn-sm" [disabled]="form.invalid"><i class="fas fa-check"></i></button>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>

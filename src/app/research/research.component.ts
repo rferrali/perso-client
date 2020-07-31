@@ -3,6 +3,7 @@ import { Paper, Keyword } from '../model';
 import { StoreService } from '../store.service'; 
 import { AuthenticationService } from '../authentication.service'; 
 import { ActivatedRoute } from '@angular/router';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-research',
@@ -33,30 +34,28 @@ export class ResearchComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.route.data
-      .subscribe((data: { keyword: Keyword }) => {
-        
-        this.kFilter = data.keyword;
-
-        this.store.papers.subscribe(papers => {
-          this.papers = papers; 
-          this.papers0 = papers.filter(x => x.type == 0); 
-          this.papers1 = papers.filter(x => x.type == 1); 
-          this.papers2 = papers.filter(x => x.type == 2); 
-          if(this.kFilter) {
-            this.papers = this.papers.filter(
-              x => {
-                if(x.keywords.length == 0) {
-                  return false; 
-                } else {
-                  return x.keywords.findIndex(y => y.slug == this.kFilter.slug) != -1
-                }
-              }
-            )
+    this.route.data.pipe(
+      switchMap((data: { keyword?: Keyword }) => {
+        this.kFilter = data.keyword; 
+        return this.store.papers; 
+      })
+    ).subscribe((papers: Paper[]) => {
+      this.papers = papers; 
+      this.papers0 = papers.filter(x => x.type == 0); 
+      this.papers1 = papers.filter(x => x.type == 1); 
+      this.papers2 = papers.filter(x => x.type == 2); 
+      if(this.kFilter) {
+        this.papers = this.papers.filter(
+          x => {
+            if(x.keywords.length == 0) {
+              return false; 
+            } else {
+              return x.keywords.findIndex(y => y.slug == this.kFilter.slug) != -1
+            }
           }
-        });
-
-      }); 
+        )
+      }
+    }); 
   }
 
   onEdit(event: boolean): void {

@@ -14,6 +14,7 @@ import { AlertModule } from 'ngx-bootstrap/alert';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { SortableModule } from 'ngx-bootstrap/sortable';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { PopoverModule } from 'ngx-bootstrap/popover';
 import { TextareaAutosizeModule } from 'ngx-textarea-autosize';
 import { BvalcssDirective } from './bvalcss.directive';
 import { CoauthorsComponent } from './coauthors/coauthors.component';
@@ -45,6 +46,8 @@ import { DatasetsComponent } from './datasets/datasets.component';
 import { DatasetComponent } from './dataset/dataset.component';
 import { OnboardingComponent } from './onboarding/onboarding.component';
 import { AnalyticsDirective } from './analytics.directive';
+import { ButtonPickerComponent } from './button-picker/button-picker.component';
+import { IconPickerComponent } from './icon-picker/icon-picker.component';
 
 
 @NgModule({
@@ -79,11 +82,13 @@ import { AnalyticsDirective } from './analytics.directive';
     DatasetsComponent,
     DatasetComponent,
     OnboardingComponent,
-    AnalyticsDirective
+    AnalyticsDirective,
+    ButtonPickerComponent,
+    IconPickerComponent
   ],
   imports: [
     BrowserModule, 
-    FormsModule, ReactiveFormsModule, HttpClientModule, 
+    FormsModule, ReactiveFormsModule, HttpClientModule, PopoverModule.forRoot(),
     AppRoutingModule,
      CollapseModule.forRoot(), BrowserAnimationsModule, AlertModule.forRoot(), ButtonsModule.forRoot(), SortableModule.forRoot(), ModalModule.forRoot(), 
      TextareaAutosizeModule, FileSizeModule, ProgressbarModule.forRoot()

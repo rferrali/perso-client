@@ -51,6 +51,7 @@ export class PaperComponent implements OnInit {
     this.editForm = this.fb.group({
         id: [this.paper.id], 
         title: [this.paper.title, Validators.required], 
+        citation: [this.paper.citation], 
         abstract: [this.paper.abstract], 
         status: [this.paper.status], 
         year: [this.paper.year, Validators.pattern('^[0-9]*$')], 
@@ -173,7 +174,7 @@ export class PaperComponent implements OnInit {
       this.allKeywords = keywords; 
       this.createEditForm(); 
     }); 
-    
+    console.log(this.paper);
     this.sortableButtons = this.btns.get('buttons').value;
     this.sortableCoauthors = this.coauthors.value;
     let coauthors = this.paper.coauthors.map(x => x.id);

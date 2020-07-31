@@ -4,10 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
-import { MessagesComponent } from './messages/messages.component';
-import { AppRoutingModule } from './app-routing.module';
-import { AdminComponent } from './admin/admin.component';
-import { NavbarComponent } from './navbar/navbar.component';
+
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AlertModule } from 'ngx-bootstrap/alert';
@@ -16,6 +13,11 @@ import { SortableModule } from 'ngx-bootstrap/sortable';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { TextareaAutosizeModule } from 'ngx-textarea-autosize';
+
+import { MessagesComponent } from './messages/messages.component';
+import { AppRoutingModule } from './app-routing.module';
+import { AdminComponent } from './admin/admin.component';
+import { NavbarComponent } from './navbar/navbar.component';
 import { BvalcssDirective } from './bvalcss.directive';
 import { CoauthorsComponent } from './coauthors/coauthors.component';
 import { CoauthorEditComponent } from './coauthor-edit/coauthor-edit.component';
@@ -48,6 +50,7 @@ import { OnboardingComponent } from './onboarding/onboarding.component';
 import { AnalyticsDirective } from './analytics.directive';
 import { ButtonPickerComponent } from './button-picker/button-picker.component';
 import { IconPickerComponent } from './icon-picker/icon-picker.component';
+import { CitationExportComponent } from './citation-export/citation-export.component';
 
 
 @NgModule({
@@ -84,7 +87,8 @@ import { IconPickerComponent } from './icon-picker/icon-picker.component';
     OnboardingComponent,
     AnalyticsDirective,
     ButtonPickerComponent,
-    IconPickerComponent
+    IconPickerComponent,
+    CitationExportComponent
   ],
   imports: [
     BrowserModule, 

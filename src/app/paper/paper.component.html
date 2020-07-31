@@ -25,15 +25,15 @@
   <div *ngIf="paper.status" class="mb-2" [innerHtml]="paper.status"></div>
 
   <div *ngIf="paper.keywords.length > 0" class="clearfix mb-2">
-    <!-- <span class="mr-1 float-left pull-left">Keywords: </span> -->
     <app-keywords-edit [editMode]="editMode" [keywords]="paper.keywords" [kFilter]="kFilter">
     </app-keywords-edit>
   </div>
 
   <div class="clearfix">
-    <span class="mr-1 float-left pull-left">
-      <a class="btn btn-sm btn-primary" href="javascript:;" (click)="showAbstract = !showAbstract" [eventTracker]='{"category":"button","action":"abstract: " + paper.title}'>
+    <span class="float-left pull-left">
+      <a class="btn btn-sm btn-primary mr-1" href="javascript:;" (click)="showAbstract = !showAbstract" [eventTracker]='{"category":"button","action":"abstract: " + paper.title}'>
         <i class="fa fa-plus"></i> Abstract</a>
+        <button class="btn btn-sm btn-primary mr-1" app-citation-export [citation]="paper.citation" *ngIf="paper.citation"></button>
     </span>
     <app-buttons [btns]="btns" [obtns]="paper.buttons" [sortableButtons]="sortableButtons" [editMode]="editMode">
     </app-buttons>
@@ -55,9 +55,11 @@
 
     </h5>
     <div class="form-group">
-      <input type="text" class="form-control" id="status" formControlName="status" placeholder="Status">
+      <input type="text" class="form-control" formControlName="status" placeholder="Status">
     </div>
-
+    <div class="form-group">
+      <input type="text" class="form-control" formControlName="citation" placeholder="Citation">
+    </div>
 
     <div class="clearfix">
       <span class="mr-1 float-left pull-left">With</span>

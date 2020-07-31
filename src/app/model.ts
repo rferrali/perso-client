@@ -16,6 +16,7 @@ export class Paper {
     id: number; 
     title: string;
     abstract: string;
+    citation: string;
     year: number; 
     status: string;
     order: number;

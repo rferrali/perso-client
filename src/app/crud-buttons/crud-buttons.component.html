@@ -1,0 +1,14 @@
+<div class="btn-group">
+  <button (click)="onClick('delete')" class="btn btn-danger" [disabled]="['sort', 'edit', 'create'].includes(mode)">
+    <i class="fa fa-trash"></i>
+    <span *ngIf="mode == 'delete'">&nbsp; Done</span>
+  </button>
+  <button (click)="onClick('sort')" class="btn btn-dark" [disabled]="['delete', 'edit', 'create'].includes(mode)">
+    <i class="fa fa-sort"></i>
+    <span *ngIf="mode == 'sort'">&nbsp; Done</span>
+  </button>
+  <button (click)="onClick('create')" class="btn btn-dark" [disabled]="['sort', 'edit', 'create', 'delete'].includes(mode)">
+    <i class="fa fa-plus"></i>
+    <span *ngIf="!['sort', 'delete'].includes(mode)">&nbsp; New {{ object }}</span>
+  </button>
+</div>

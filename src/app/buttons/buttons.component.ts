@@ -13,21 +13,18 @@ export class ButtonsComponent implements OnInit {
 
   @Input() btns: FormGroup; 
   @Input() obtns: Button[]; 
-  @Input() editMode: boolean; 
   @Input() sortableButtons: any; 
+  @Input() mode: string; 
   showButton = false; 
-  buttonMode = false; 
-  // sortableButtons: any;
+  buttonMode = true; 
   buttonsForm: FormArray; 
 
   constructor(
-    private store: StoreService, 
+    public store: StoreService, 
     private fb: FormBuilder
   ) { }
 
-  ngOnInit() {
-    // this.sortableButtons = this.buttons.value; 
-  }
+  ngOnInit() { }
 
   get buttons() {
     return this.btns.get('buttons') as FormArray;

@@ -11,12 +11,14 @@ import { AuthenticationService } from '../authentication.service';
 export class SoftwaresComponent implements OnInit {
 
   softwares: Software[]; 
+  edittedId: number;
   createMode = false; 
   deleteMode = false; 
   sortMode = false; 
   editMode = false; 
   disableEdit = false; 
   newSoftware = new Software; 
+  mode = 'none';
 
   constructor(
     private store: StoreService, 
@@ -27,37 +29,8 @@ export class SoftwaresComponent implements OnInit {
     this.store.softwares.subscribe(softwares => {this.softwares = softwares}); 
   }
 
-  onEdit(event: boolean): void {
-    this.editMode = event; 
-    this.disableEdit = event;
-    if(!this.editMode) {
-      this.createMode = false; 
-    }
-  }
-
-  onCreate(): void {
-    this.editMode = false; 
-    this.deleteMode = false; 
-    this.sortMode = false; 
-    this.createMode = true; 
-    this.disableEdit = true; 
-  }
-
-  onDelete(): void {
-    this.deleteMode = !this.deleteMode; 
-    this.editMode = false; 
-    this.sortMode = false; 
-    this.createMode = false; 
-    this.disableEdit = !this.disableEdit; 
-  }
-
-  onDeleteEvent(event: any): void {
-    this.store.deleteSoftware(event); 
-  }
-
-  onSort(): void {
-    this.sortMode = ! this.sortMode; 
-    if(!this.sortMode) {
+  modeSelect(e: string) {
+    if(this.mode == 'sort' && e == 'none') {
       let len = this.softwares.length;
       var i; 
       for (i=0; i<len; i++) {
@@ -65,6 +38,21 @@ export class SoftwaresComponent implements OnInit {
       }
       this.store.updateSoftwares(this.softwares);
     }
+    this.mode = e;  
+  }
+
+  onEdit(e: number): void {
+    if(this.mode == 'none') {
+      this.mode = 'edit';
+      this.edittedId = e; 
+    } else {
+      this.mode = 'none';
+      this.edittedId = null; 
+    }
+  }
+
+  onDelete(event: Software): void {
+    this.store.deleteSoftware(event); 
   }
 
 }

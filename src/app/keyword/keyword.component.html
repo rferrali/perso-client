@@ -1,9 +1,3 @@
-<!-- <div class="card h-100"> -->
-<!-- <img class="card-img-top" src="{{ form.get('icon').value }}" alt="" height=80 width=80> -->
-
-<!-- <div class="card-body"> -->
-
-
 <div *ngIf="!editMode; else editView">
     <a [routerLink]="['/research', keyword.slug]">
       <div class="icon">
@@ -14,7 +8,6 @@
   
   <p class="text-muted">{{ keyword.description }}</p>
 </div>
-<!-- </div> -->
 
 
 <ng-template #editView>

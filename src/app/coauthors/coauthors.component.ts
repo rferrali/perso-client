@@ -19,25 +19,14 @@ export class CoauthorsComponent implements OnInit {
     public store: StoreService
   ) { }
 
-  ngOnInit() {
-    // this.store.people.subscribe(
-    //   res => {this.people = res;} 
-    // ); 
+  ngOnInit() { }
+
+  deletePerson(person: Person) {
+    this.store.deletePerson(person); 
   }
 
-  // getPeople(): void {
-  //   this.store.getPeople()
-  //       .subscribe(people => {
-  //         this.people = people; 
-  //       });
-  // }
-
-  clickPerson(person: Person): void {
-    if(this.deleteMode) {
-      this.store.deletePerson(person); 
-    } else {
-      this.person = person; 
-      this.editMode = true; 
-    }
+  clickPerson(person?: Person): void {
+    this.person = person ? person : new Person;
+    this.editMode = true; 
   }
 }

@@ -51,6 +51,8 @@ import { AnalyticsDirective } from './analytics.directive';
 import { ButtonPickerComponent } from './button-picker/button-picker.component';
 import { IconPickerComponent } from './icon-picker/icon-picker.component';
 import { CitationExportComponent } from './citation-export/citation-export.component';
+import { SectionHeaderComponent } from './section-header/section-header.component';
+import { CrudButtonsComponent } from './crud-buttons/crud-buttons.component';
 
 
 @NgModule({
@@ -88,7 +90,9 @@ import { CitationExportComponent } from './citation-export/citation-export.compo
     AnalyticsDirective,
     ButtonPickerComponent,
     IconPickerComponent,
-    CitationExportComponent
+    CitationExportComponent,
+    SectionHeaderComponent,
+    CrudButtonsComponent
   ],
   imports: [
     BrowserModule, 

@@ -1,20 +1,20 @@
-<h1>
-  People
-  <div class="btn-group float-right pull-right">
+<app-section-header disablePreview>
+  <span><h1>People</h1></span>
+  <div class="btn-group">
     <button class="btn btn-danger" (click)="deleteMode = !deleteMode" [disabled]="editMode">
       <i class="fa fa-trash"></i>
       <span *ngIf="deleteMode">&nbsp; Done</span>
     </button>
-    <button class="btn btn-dark" (click)="clickPerson(newPerson)" [disabled]="deleteMode || editMode">
+    <button class="btn btn-dark" (click)="clickPerson()" [disabled]="deleteMode || editMode">
       <i class="fa fa-plus"></i>
       <span *ngIf="!deleteMode">&nbsp; New person</span>
     </button>
   </div>
-</h1>
-
+</app-section-header>
 <div>
   <span *ngFor="let person of store.people | async ">
-    <button type="button" class="btn btn-primary mr-1 mt-1" (click)="clickPerson(person)" [disabled]="editMode">
+    <button type="button" class="btn btn-primary mr-1 mt-1"
+      (click)="deleteMode ? deletePerson(person) : clickPerson(person)" [disabled]="editMode">
       {{person.first_name}} {{person.last_name}}
       <span *ngIf="deleteMode">
         &nbsp;<i class="fa fa-times-circle"></i>
@@ -23,8 +23,6 @@
   </span>
 </div>
 
-<!-- {{ ppl | json }} -->
-
 <div *ngIf="editMode" class="mt-3">
-<app-coauthor-edit [person]="person" (submitted)="editMode = false"></app-coauthor-edit>
+  <app-coauthor-edit [person]="person" (submitted)="editMode = false"></app-coauthor-edit>
 </div>

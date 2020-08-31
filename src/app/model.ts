@@ -33,6 +33,19 @@ export class Software {
     details: string; 
     order: number; 
     buttons: Button[]; 
+
+    constructor(object?: any) {
+        if(object) {
+            this.id = object.id; 
+            this.name = object.name; 
+            this.slug = object.slug; 
+            this.details = object.details; 
+            this.order = object.order; 
+            this.buttons = object.buttons; 
+        } else {
+            this.buttons = []; 
+        }
+    }
 }
 
 export class File {

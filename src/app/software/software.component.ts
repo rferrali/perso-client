@@ -1,8 +1,7 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { Software } from '../model'; 
+import { Software } from '../model';
 import { FormArray, FormBuilder, Validators, FormGroup } from '@angular/forms'
-import { StoreService } from '../store.service'; 
-import { AuthenticationService } from '../authentication.service'; 
+import { StoreService } from '../store.service';
 
 @Component({
   selector: 'app-software',
@@ -11,110 +10,101 @@ import { AuthenticationService } from '../authentication.service';
 })
 export class SoftwareComponent implements OnInit {
 
-  @Input() software: Software; 
-  @Input() disableEdit: boolean; 
-  @Input() editMode: boolean; 
-  @Input() deleteMode: boolean;
-  @Output() isEditMode = new EventEmitter<boolean>(); 
-  @Output() deleteEvent = new EventEmitter<Software>(); 
+  @Input() software = new Software;
+  @Input() mode: string;
+  @Input() edittedId: number;
+  private _new: boolean
+  @Input() get new() {
+    return this._new;
+  }
+  set new(value: any) {
+    this._new = !(value === undefined);
+  }
+  @Output() delete = new EventEmitter<Software>();
+  @Output() edit = new EventEmitter<number>();
 
-  editForm: FormGroup; 
+  editForm: FormGroup;
   showDetails = false;
-  
   sortableButtons: any;
-  get btns() { 
-    return this.editForm.get('btns') as FormGroup; 
-   }
-
-  enableEdit(): void {
-    this.editMode = true; 
-    this.isEditMode.emit(true); 
+  get btns() {
+    return this.editForm.get('btns') as FormGroup;
   }
 
+  constructor(
+    private store: StoreService,
+    private fb: FormBuilder
+  ) { }
+
+  ngOnInit() {
+    if (!this.software) this.software = new Software;
+    this.createEditForm();
+    this.sortableButtons = this.btns.get('buttons').value;
+  }
+
+  enableEdit(): void {
+    this.edit.emit(this.software.id);
+  }
 
   createEditForm(): void {
     this.editForm = this.fb.group({
-        id: [this.software.id], 
-        name: [this.software.name, Validators.required], 
-        slug: [this.software.slug, Validators.required], 
-        details: [this.software.details, Validators.required], 
-        order: [this.software.order], 
-        btns: this.fb.group({
-          buttons: this.fb.array(this.software.buttons.map(button => this.fb.group(button))), 
-          newButton: this.fb.group({
-            icon: [''], 
-            label: [''], 
-            type: ['0'], 
-            file: [''], 
-            url: ['']
-          })
+      id: [this.software.id],
+      name: [this.software.name, Validators.required],
+      slug: [this.software.slug, Validators.required],
+      details: [this.software.details, Validators.required],
+      order: [this.software.order],
+      btns: this.fb.group({
+        buttons: this.fb.array(this.software.buttons.map(button => this.fb.group(button))),
+        newButton: this.fb.group({
+          icon: [''],
+          label: [''],
+          type: ['0'],
+          file: [''],
+          url: ['']
         })
+      })
     })
   }
 
   onSubmit(): void {
-    let form = this.editForm.value; 
-    form.buttons = form.btns.buttons; 
-    delete form.btns; 
-    this.software = form as Software; 
-    if(this.software.id) {
+    let form = this.editForm.value;
+    form.buttons = form.btns.buttons;
+    delete form.btns;
+    this.software = form as Software;
+    if (this.software.id) {
       this.store.updateSoftware(this.software);
     } else {
       this.store.addSoftware(this.software);
     }
-    this.isEditMode.emit(false);
+    this.edit.emit(this.software.id);
   }
 
   onRestore(): void {
-    let software = this.software as any; 
+    let software = this.software as any;
     this.editForm.reset(software);
     this.editForm.setControl(
-      'btns', 
+      'btns',
       this.fb.group({
-        buttons: this.fb.array(this.software.buttons.map(button => this.fb.group(button))), 
+        buttons: this.fb.array(this.software.buttons.map(button => this.fb.group(button))),
         newButton: this.fb.group({
-          icon: [''], 
-          label: [''], 
-          type: ['0'], 
-          file: [''], 
+          icon: [''],
+          label: [''],
+          type: ['0'],
+          file: [''],
           url: ['']
         })
       })
-    ); 
-    
-    this.sortableButtons = this.btns.get('buttons').value; 
+    );
 
-    // autosize.update($('.autosize'));
+    this.sortableButtons = this.btns.get('buttons').value;
   }
 
   onCancel(): void {
-    this.onRestore(); 
-    this.editMode = false; 
-    this.isEditMode.emit(false); 
+    this.onRestore();
+    this.edit.emit();
   }
-  
+
   onDelete(software: Software): void {
-    this.deleteEvent.emit(software); 
+    this.delete.emit(software);
   }
-
-  
-
-  // initialization
-
-  constructor(
-    private store: StoreService, 
-    private fb: FormBuilder, 
-    private auth: AuthenticationService
-  ) { }
-
-  ngOnInit() { 
-    if(!this.software.buttons) this.software.buttons = []; 
-    this.createEditForm(); 
-    this.sortableButtons = this.btns.get('buttons').value;
-    // $(document).ready(() => {
-    //   autosize($('.autosize'));
-    // });
-   }
-
 
 }

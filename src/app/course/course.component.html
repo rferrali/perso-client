@@ -33,7 +33,7 @@
       <a class="btn btn-sm btn-primary" href="javascript:;" (click)="showDetails = !showDetails">
         <i class="fa fa-plus"></i> Details</a>
     </span>
-    <app-buttons [btns]="btns" [obtns]="course.buttons" [sortableButtons]="sortableButtons" [editMode]="editMode">
+    <app-buttons [btns]="btns" [obtns]="course.buttons" [sortableButtons]="sortableButtons">
     </app-buttons>
   </div>
   <p class="card-text mt-2" [collapse]="!showDetails">
@@ -93,7 +93,7 @@
         <a class="btn btn-sm btn-primary" href="javascript:;" (click)="showDetails = !showDetails">
           <i class="fa fa-plus"></i> Details</a>
       </span>
-      <app-buttons [btns]="btns" [obtns]="course.buttons" [sortableButtons]="sortableButtons" [editMode]="editMode">
+      <app-buttons [btns]="btns" [obtns]="course.buttons" [sortableButtons]="sortableButtons">
       </app-buttons>
     </div>
 

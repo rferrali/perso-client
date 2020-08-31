@@ -1,71 +1,36 @@
-<span *ngIf="editMode; then editBlock; else displayBlock"></span>
-
-
-<ng-template #displayBlock>
-  <span *ngIf="people.length > 0" class="mb-2">
-    <span *ngFor="let person of people; index as i">
-      <a href="{{ person.url }}" [eventTracker]='{"category":"person","action":person.url}' target="_blank">{{ person.first_name }} {{ person.last_name }}</a>
-      <span *ngIf="people.length > 1">
-        <span *ngIf="i < people.length - 2">, </span>
-        <span *ngIf="i == people.length - 2"> and </span>
-      </span>
-      <!-- <span *ngIf="last"> and </span> -->
+<div *ngIf="['edit','create'].includes(mode)" class="d-inline-flex">
+  <bs-sortable [(ngModel)]="people" [ngModelOptions]="{standalone: true}" [itemTemplate]="personTemplate"
+    itemClass="sortable-item mr-1 mb-1" itemActiveClass="sortable-item-active" placeholderItem=""
+    placeholderClass="placeholderStyle" wrapperClass="sortable-wrapper d-inline-flex" (onChange)="sortPeople($event)">
+  </bs-sortable>
+  <span>
+    <span class="form-inline">
+      <button *ngIf="(!showTypeahead) && otherPeople.length > 0" class="btn btn-primary btn-sm mr-1 mb-1"
+        type="button" (click)="showTypeahead = true"><i class="fas fa-plus"></i> Add person</button>
+      <input *ngIf="showTypeahead" [(ngModel)]="thisPerson" [typeahead]="otherPeopleTypeahead"
+        typeaheadOptionField="full_name" (typeaheadOnSelect)="onSelect($event)" class="form-control form-control-sm">
     </span>
   </span>
-</ng-template>
+</div>
 
-<ng-template #editBlock>
-  <div class="mb-2">
-    
-    <div *ngIf="!peopleMode; else editPeopleView">
-      <div>
-        <span>
-          <span *ngFor="let person of peopleForm.value; index as i">
-            <a href="{{ person.url }}">{{ person.first_name }} {{ person.last_name }}</a>
-            <span *ngIf="peopleForm.value.length > 1">
-              <span *ngIf="i < peopleForm.value.length - 2">, </span>
-              <span *ngIf="i == peopleForm.value.length - 2"> and </span>
-            </span>
-          </span>
+<span *ngIf="!['edit','create'].includes(mode)">
+  <span *ngIf="!['edit','create'].includes(mode)">
+    <span *ngIf="people.length > 0">
+      <span *ngFor="let person of people; index as i">
+        <a href="{{ person.url }}" [eventTracker]='{"category":"person","action":person.url}'
+          target="_blank">{{ person.first_name }} {{ person.last_name }}</a>
+        <span *ngIf="people.length > 1">
+          <span *ngIf="i < people.length - 2">, </span>
+          <span *ngIf="i == people.length - 2"> and </span>
         </span>
-        <button type="button" class="btn btn-sm btn-outline-dark pull-right float-right"
-          (click)="peopleMode = !peopleMode">
-          <i class="fa fa-user"></i>
-        </button>
-      </div>
-    </div>
+      </span>
+    </span>
+  </span>
+</span>
 
-    <ng-template #editPeopleView>
-      <div class="clearfix">
-          <bs-sortable [(ngModel)]="sortablePeople" [ngModelOptions]="{standalone: true}"
-            [itemTemplate]="personTemplate" itemClass="sortable-item pull-left float-left mr-1 mt-1"
-            itemActiveClass="sortable-item-active" placeholderItem="" placeholderClass="placeholderStyle"
-            wrapperClass="sortable-wrapper" (onChange)="sortPeople($event)">
-          </bs-sortable>
-          <button type="button" class="btn btn-sm btn-outline-dark pull-right float-right mt-1"
-            (click)="peopleMode = !peopleMode">
-            <i class="fa fa-user"></i>
-          </button>
-        </div>
-
-
-
-        <ng-template #personTemplate let-item="item" let-index="index">
-          <button type="button" class="btn btn-sm btn-primary">
-            {{item.value.first_name}} {{item.value.last_name}}
-            &nbsp;<span (click)="deletePerson(index)"><i class="fa fa-times-circle"></i></span>
-          </button>
-        </ng-template>
-
-        <div class="clearfix mt-2">
-          <div class="pull-left float-left mr-1 mt-1" *ngFor="let person of otherPeople">
-            <button type="button" class="btn btn-sm btn-outline-primary" (click)="addPerson(person)">
-              {{person.first_name}} {{person.last_name}}
-              &nbsp;<span><i class="fa fa-plus"></i></span>
-            </button>
-          </div>
-        </div>
-    </ng-template>
-
-  </div>
+<ng-template #personTemplate let-item="item" let-index="index">
+  <button type="button" class="btn btn-sm btn-primary">
+    {{item.value.first_name}} {{item.value.last_name}}
+    &nbsp;<span (click)="deletePerson(index)"><i class="fa fa-times-circle"></i></span>
+  </button>
 </ng-template>

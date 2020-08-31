@@ -13,6 +13,7 @@ import { SortableModule } from 'ngx-bootstrap/sortable';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { TextareaAutosizeModule } from 'ngx-textarea-autosize';
+import { TypeaheadModule } from 'ngx-bootstrap/typeahead'; 
 
 import { MessagesComponent } from './messages/messages.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -99,7 +100,7 @@ import { CrudButtonsComponent } from './crud-buttons/crud-buttons.component';
     FormsModule, ReactiveFormsModule, HttpClientModule, PopoverModule.forRoot(),
     AppRoutingModule,
      CollapseModule.forRoot(), BrowserAnimationsModule, AlertModule.forRoot(), ButtonsModule.forRoot(), SortableModule.forRoot(), ModalModule.forRoot(), 
-     TextareaAutosizeModule, FileSizeModule, ProgressbarModule.forRoot()
+     TextareaAutosizeModule, FileSizeModule, ProgressbarModule.forRoot(), TypeaheadModule.forRoot()
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }

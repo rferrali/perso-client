@@ -2,7 +2,6 @@ import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { Course, Person } from '../model'; 
 import { FormArray, FormBuilder, Validators, FormGroup } from '@angular/forms'
 import { StoreService } from '../store.service'; 
-import { AuthenticationService } from '../authentication.service'; 
 
 @Component({
   selector: 'app-course',
@@ -27,7 +26,6 @@ export class CourseComponent implements OnInit {
 
   editForm: FormGroup; 
   showDetails = false;
-  sortableButtons: any;
   get btns() { 
     return this.editForm.get('btns') as FormGroup; 
    }
@@ -49,11 +47,6 @@ export class CourseComponent implements OnInit {
   ngOnInit() { 
     if (!this.course) this.course = new Course;
     this.createEditForm(); 
-    this.sortableButtons = this.btns.get('buttons').value;
-    this.sortablePeople = this.people.value;
-    let people = this.course.people.map(x => x.id);
-    this.store.people.subscribe(people => {this.allPeople = people}); 
-    this.otherPeople = this.allPeople.filter(x => !people.includes(x.id) ); 
    }
 
   enableEdit(): void {
@@ -112,19 +105,12 @@ export class CourseComponent implements OnInit {
         })
       })
     ); 
-    
     this.editForm.setControl(
       'people', 
       this.fb.array(
         this.course.people.map(x => this.fb.group(x))
         )
     );
-
-    
-    this.sortableButtons = this.btns.get('buttons').value; 
-    this.sortablePeople = this.people.value; 
-    let people = this.course.people.map(x => x.id);
-    this.otherPeople = this.allPeople.filter(x => !people.includes(x.id) ); 
   }
 
   onCancel(): void {

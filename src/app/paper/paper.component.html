@@ -11,8 +11,7 @@
     <div>
       <span><strong style="font-weight: 500;">{{ paper.title }}</strong> </span>
       <span *ngIf="paper.coauthors.length > 0">, with </span>
-      <app-people-edit [people]="paper.coauthors" [editMode]="editMode" [peopleForm]="coauthors"
-        [sortablePeople]="sortableCoauthors" [otherPeople]="otherAuthors">
+      <app-people-edit [peopleForm]="coauthors">
       </app-people-edit>
     </div>
     <div>
@@ -68,8 +67,7 @@
 
     <div class="clearfix">
       <span class="mr-1 float-left pull-left">With</span>
-      <app-people-edit [people]="paper.coauthors" [editMode]="editMode" [peopleForm]="coauthors"
-        [sortablePeople]="sortableCoauthors" [otherPeople]="otherAuthors">
+      <app-people-edit [peopleForm]="coauthors">
       </app-people-edit>
     </div>
 

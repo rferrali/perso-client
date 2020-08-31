@@ -21,12 +21,10 @@
       </button>
     </div>
   </app-section-header>
-  <div class="clearfix">
-    <span class="float-left pull-left">{{ course.term }}. {{ course.level }}. {{ course.role }} </span>
-    <span *ngIf="course.people.length > 0" class="ml-1 mr-1 float-left pull-left">for</span>
-    <app-people-edit [people]="course.people" [editMode]="editMode" [peopleForm]="people"
-      [sortablePeople]="sortablePeople" [otherPeople]="otherPeople">
-    </app-people-edit>
+  <div>
+    <span>{{ course.term }}. {{ course.level }}. {{ course.role }} </span>
+    <span *ngIf="course.people.length > 0">for </span>
+    <app-people-edit [peopleForm]="people" [mode]="mode"></app-people-edit>
   </div>
   <div>
     <app-buttons [btns]="btns" [mode]="mode">
@@ -77,10 +75,9 @@
             </div>
     </div>
 
-    <div class="clearfix">
-        <span>For</span>
-        <app-people-edit [people]="course.people" [editMode]="editMode" [peopleForm]="people"
-          [sortablePeople]="sortablePeople" [otherPeople]="otherPeople">
+    <div>
+        <span>For </span>
+        <app-people-edit [peopleForm]="people" [mode]="mode">
         </app-people-edit>
     </div>
 

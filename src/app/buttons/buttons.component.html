@@ -1,6 +1,6 @@
 <div class="d-flex align-items-start">
   <ng-content></ng-content>
-  <div *ngIf="mode == 'edit'; then editBlock; else displayBlock" class="d-flex align-items-start"></div>
+  <div *ngIf="['edit','create'].includes(mode); then editBlock; else displayBlock" class="d-flex align-items-start"></div>
 </div>
 
 

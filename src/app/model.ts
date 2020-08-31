@@ -32,7 +32,7 @@ export class Software {
     slug: string; 
     details: string; 
     order: number; 
-    buttons: Button[]; 
+    buttons = [] as Button[]; 
 
     constructor(object?: any) {
         if(object) {
@@ -42,9 +42,7 @@ export class Software {
             this.details = object.details; 
             this.order = object.order; 
             this.buttons = object.buttons; 
-        } else {
-            this.buttons = []; 
-        }
+        } 
     }
 }
 
@@ -84,8 +82,22 @@ export class Course {
     details: string; 
     role: string; 
     order: number; 
-    buttons: Button[]; 
-    people: Person[]; 
+    buttons = [] as Button[]; 
+    people = [] as Person[]; 
+
+    constructor(object?: any) {
+        if(object) {
+            this.id = object.id;
+            this.name = object.name;
+            this.term = object.term;
+            this.level = object.level;
+            this.details = object.details;
+            this.role = object.role;
+            this.order = object.order;
+            this.buttons = object.buttons;
+            this.people = object.people;
+        }
+    }
 }
 
 export class User { 

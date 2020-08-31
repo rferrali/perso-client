@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Software } from '../model'; 
 import { StoreService } from '../store.service'; 
-import { AuthenticationService } from '../authentication.service'; 
 
 @Component({
   selector: 'app-softwares',
@@ -12,17 +11,10 @@ export class SoftwaresComponent implements OnInit {
 
   softwares: Software[]; 
   edittedId: number;
-  createMode = false; 
-  deleteMode = false; 
-  sortMode = false; 
-  editMode = false; 
-  disableEdit = false; 
-  newSoftware = new Software; 
   mode = 'none';
 
   constructor(
-    private store: StoreService, 
-    public auth: AuthenticationService
+    private store: StoreService
   ) { }
 
   ngOnInit() {

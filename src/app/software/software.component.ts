@@ -37,6 +37,7 @@ export class SoftwareComponent implements OnInit {
 
   ngOnInit() {
     if (!this.software) this.software = new Software;
+    console.log(this.software);
     this.createEditForm();
     this.sortableButtons = this.btns.get('buttons').value;
   }
@@ -100,11 +101,11 @@ export class SoftwareComponent implements OnInit {
 
   onCancel(): void {
     this.onRestore();
-    this.edit.emit();
+    this.edit.emit(this.software.id);
   }
 
-  onDelete(software: Software): void {
-    this.delete.emit(software);
+  onDelete(): void {
+    this.delete.emit(this.software);
   }
 
 }

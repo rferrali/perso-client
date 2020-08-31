@@ -1,26 +1,26 @@
 <div class="card">
   <div class="card-body">
-    <div *ngIf="!editMode; then displayBlock; else editBlock">
+    <div *ngIf="(mode == 'edit' && course.id == edittedId) || (mode == 'create' && new); then editBlock; else displayBlock">
 
     </div>
   </div>
 </div>
 
 <ng-template #displayBlock>
-  <h5 class="card-title">
-    {{course.name}}
-    <span *ngIf="! auth.preview">
-      <button *ngIf="!disableEdit" class="btn btn-dark float-right pull-right" type="button" (click)="enableEdit()">
+  <app-section-header class="card-title">
+    <span>
+      <h5>{{ course.name }}</h5>
+    </span>
+    <div>
+      <button *ngIf="mode == 'none'" class="btn btn-dark" type="button" (click)="enableEdit()">
         <i class="fa fa-edit"></i>
       </button>
-      <button *ngIf="deleteMode" class="btn btn-danger btn-outline float-right pull-right" type="button"
-        (click)="onDelete(course)">
+      <button *ngIf="mode == 'delete'" class="btn btn-danger btn-outline" type="button"
+        (click)="onDelete()">
         <i class="fa fa-trash"></i>
       </button>
-    </span>
-    
-
-  </h5>
+    </div>
+  </app-section-header>
   <div class="clearfix">
     <span class="float-left pull-left">{{ course.term }}. {{ course.level }}. {{ course.role }} </span>
     <span *ngIf="course.people.length > 0" class="ml-1 mr-1 float-left pull-left">for</span>
@@ -28,17 +28,13 @@
       [sortablePeople]="sortablePeople" [otherPeople]="otherPeople">
     </app-people-edit>
   </div>
-  <div class="clearfix">
-    <span class="mr-1 float-left pull-left">
-      <a class="btn btn-sm btn-primary" href="javascript:;" (click)="showDetails = !showDetails">
-        <i class="fa fa-plus"></i> Details</a>
-    </span>
+  <div>
     <app-buttons [btns]="btns" [obtns]="course.buttons" [sortableButtons]="sortableButtons">
+      <a class="btn btn-sm btn-primary btn-list" href="javascript:;" (click)="showDetails = !showDetails">
+        <i class="fa fa-plus"></i> Details</a>
     </app-buttons>
   </div>
-  <p class="card-text mt-2" [collapse]="!showDetails">
-    {{ course.details }}
-  </p>
+  <p class="card-text mt-2" [collapse]="!showDetails" [innerHTML]="course.details"></p>
 </ng-template>
 
 
@@ -88,12 +84,10 @@
         </app-people-edit>
     </div>
 
-    <div class="clearfix">
-      <span class="mr-1">
-        <a class="btn btn-sm btn-primary" href="javascript:;" (click)="showDetails = !showDetails">
+    <div>
+      <app-buttons [btns]="btns" [obtns]="course.buttons" [sortableButtons]="sortableButtons" [mode]="mode">
+        <a class="btn btn-sm btn-primary btn-list" href="javascript:;" (click)="showDetails = !showDetails">
           <i class="fa fa-plus"></i> Details</a>
-      </span>
-      <app-buttons [btns]="btns" [obtns]="course.buttons" [sortableButtons]="sortableButtons">
       </app-buttons>
     </div>
 

@@ -11,17 +11,22 @@ import { AuthenticationService } from '../authentication.service';
 })
 export class CourseComponent implements OnInit {
 
-  @Input() course: Course; 
-  @Input() disableEdit: boolean; 
-  @Input() editMode: boolean; 
-  @Input() deleteMode: boolean;
-  @Output() isEditMode = new EventEmitter<boolean>(); 
-  @Output() deleteEvent = new EventEmitter<Course>(); 
+  @Input() course = new Course; 
+  @Input() mode: string;
+  @Input() edittedId: number;
+  private _new: boolean
+  @Input() get new() {
+    return this._new;
+  }
+  set new(value: any) {
+    this._new = !(value === undefined);
+  }
+  @Output() delete = new EventEmitter<Course>();
+  @Output() edit = new EventEmitter<number>();
   allPeople: Person[]; 
 
   editForm: FormGroup; 
   showDetails = false;
-  
   sortableButtons: any;
   get btns() { 
     return this.editForm.get('btns') as FormGroup; 
@@ -34,11 +39,26 @@ export class CourseComponent implements OnInit {
     return this.editForm.get('people') as FormArray;
   }
 
-  enableEdit(): void {
-    this.editMode = true; 
-    this.isEditMode.emit(true); 
-  }
+  // initialization
 
+  constructor(
+    private store: StoreService, 
+    private fb: FormBuilder
+  ) { }
+
+  ngOnInit() { 
+    if (!this.course) this.course = new Course;
+    this.createEditForm(); 
+    this.sortableButtons = this.btns.get('buttons').value;
+    this.sortablePeople = this.people.value;
+    let people = this.course.people.map(x => x.id);
+    this.store.people.subscribe(people => {this.allPeople = people}); 
+    this.otherPeople = this.allPeople.filter(x => !people.includes(x.id) ); 
+   }
+
+  enableEdit(): void {
+    this.edit.emit(this.course.id);
+  }
 
   createEditForm(): void {
     this.editForm = this.fb.group({
@@ -73,7 +93,7 @@ export class CourseComponent implements OnInit {
     } else {
       this.store.addCourse(this.course);
     }
-    this.isEditMode.emit(false);
+    this.edit.emit(this.course.id);
   }
 
   onRestore(): void {
@@ -105,42 +125,15 @@ export class CourseComponent implements OnInit {
     this.sortablePeople = this.people.value; 
     let people = this.course.people.map(x => x.id);
     this.otherPeople = this.allPeople.filter(x => !people.includes(x.id) ); 
-
-    // autosize.update($('.autosize'));
   }
 
   onCancel(): void {
     this.onRestore(); 
-    this.editMode = false; 
-    this.isEditMode.emit(false); 
+    this.edit.emit(this.course.id);
   }
   
   onDelete(course: Course): void {
-    this.deleteEvent.emit(course); 
+    this.delete.emit(course);
   }
-
-  
-
-  // initialization
-
-  constructor(
-    private store: StoreService, 
-    private fb: FormBuilder, 
-    private auth: AuthenticationService
-  ) { }
-
-  ngOnInit() { 
-    if(!this.course.buttons) this.course.buttons = []; 
-    if(!this.course.people) this.course.people = []; 
-    this.createEditForm(); 
-    this.sortableButtons = this.btns.get('buttons').value;
-    this.sortablePeople = this.people.value;
-    let people = this.course.people.map(x => x.id);
-    this.store.people.subscribe(people => {this.allPeople = people}); 
-    this.otherPeople = this.allPeople.filter(x => !people.includes(x.id) ); 
-    // $(document).ready(() => {
-    //   autosize($('.autosize'));
-    // });
-   }
 
 }

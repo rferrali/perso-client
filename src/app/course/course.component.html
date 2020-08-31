@@ -29,7 +29,7 @@
     </app-people-edit>
   </div>
   <div>
-    <app-buttons [btns]="btns" [obtns]="course.buttons" [sortableButtons]="sortableButtons">
+    <app-buttons [btns]="btns" [mode]="mode">
       <a class="btn btn-sm btn-primary btn-list" href="javascript:;" (click)="showDetails = !showDetails">
         <i class="fa fa-plus"></i> Details</a>
     </app-buttons>
@@ -85,7 +85,7 @@
     </div>
 
     <div>
-      <app-buttons [btns]="btns" [obtns]="course.buttons" [sortableButtons]="sortableButtons" [mode]="mode">
+      <app-buttons [btns]="btns" [mode]="mode">
         <a class="btn btn-sm btn-primary btn-list" href="javascript:;" (click)="showDetails = !showDetails">
           <i class="fa fa-plus"></i> Details</a>
       </app-buttons>

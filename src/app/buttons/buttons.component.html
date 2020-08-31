@@ -5,7 +5,7 @@
 
 
 <ng-template #displayBlock>
-  <a *ngFor="let button of obtns" class="btn btn-sm btn-primary btn-list" href="{{ button.content }}" target="_blank"
+  <a *ngFor="let button of sortableButtons" class="btn btn-sm btn-primary btn-list" href="{{ button.content }}" target="_blank"
     [eventTracker]='{"category":"button","action":button.content}'>
     <i class="{{ button.icon }}"></i> {{ button.label }}
   </a>

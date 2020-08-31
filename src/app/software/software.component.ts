@@ -25,7 +25,6 @@ export class SoftwareComponent implements OnInit {
 
   editForm: FormGroup;
   showDetails = false;
-  sortableButtons: any;
   get btns() {
     return this.editForm.get('btns') as FormGroup;
   }
@@ -37,9 +36,7 @@ export class SoftwareComponent implements OnInit {
 
   ngOnInit() {
     if (!this.software) this.software = new Software;
-    console.log(this.software);
     this.createEditForm();
-    this.sortableButtons = this.btns.get('buttons').value;
   }
 
   enableEdit(): void {
@@ -80,8 +77,7 @@ export class SoftwareComponent implements OnInit {
   }
 
   onRestore(): void {
-    let software = this.software as any;
-    this.editForm.reset(software);
+    this.editForm.reset(this.software);
     this.editForm.setControl(
       'btns',
       this.fb.group({
@@ -95,8 +91,6 @@ export class SoftwareComponent implements OnInit {
         })
       })
     );
-
-    this.sortableButtons = this.btns.get('buttons').value;
   }
 
   onCancel(): void {

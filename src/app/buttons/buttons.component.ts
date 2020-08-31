@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnChanges, Input } from '@angular/core';
 import { FormBuilder, FormArray, FormGroup, Validators } from '@angular/forms'
 import { Button } from '../model'; 
 import { ValidateRequiredType } from '../validators';
@@ -9,23 +9,12 @@ import { StoreService } from '../store.service'
   templateUrl: './buttons.component.html',
   styleUrls: ['./buttons.component.css']
 })
-export class ButtonsComponent implements OnInit {
+export class ButtonsComponent implements OnChanges {
 
   @Input() btns: FormGroup; 
-  @Input() obtns: Button[]; 
-  @Input() sortableButtons: any; 
   @Input() mode: string; 
+  sortableButtons: Button[]; 
   showButton = false; 
-  buttonMode = true; 
-  buttonsForm: FormArray; 
-
-  constructor(
-    public store: StoreService, 
-    private fb: FormBuilder
-  ) { }
-
-  ngOnInit() { }
-
   get buttons() {
     return this.btns.get('buttons') as FormArray;
   }
@@ -35,6 +24,17 @@ export class ButtonsComponent implements OnInit {
   get type() {
     return this.newButton.get('type').value; 
   }
+
+  constructor(
+    public store: StoreService, 
+    private fb: FormBuilder
+  ) { }
+
+  ngOnChanges() { 
+    this.sortableButtons = this.buttons.value; 
+   }
+
+  
 
   showAddButton() {
     this.btns.setControl(
@@ -81,7 +81,7 @@ export class ButtonsComponent implements OnInit {
 
   sortButtons(event: any): void {
     this.buttons.setValue(this.sortableButtons);
-    }
+  }
 
   onCancelButton() {
     this.btns.setControl(

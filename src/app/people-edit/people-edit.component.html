@@ -1,4 +1,4 @@
-<div *ngIf="['edit','create'].includes(mode)" class="d-inline-flex">
+<div *ngIf="editable" class="d-inline-flex">
   <bs-sortable [(ngModel)]="people" [ngModelOptions]="{standalone: true}" [itemTemplate]="personTemplate"
     itemClass="sortable-item mr-1 mb-1" itemActiveClass="sortable-item-active" placeholderItem=""
     placeholderClass="placeholderStyle" wrapperClass="sortable-wrapper d-inline-flex" (onChange)="sortPeople($event)">
@@ -13,8 +13,8 @@
   </span>
 </div>
 
-<span *ngIf="!['edit','create'].includes(mode)">
-  <span *ngIf="!['edit','create'].includes(mode)">
+<span *ngIf="!editable">
+  <span *ngIf="!editable">
     <span *ngIf="people.length > 0">
       <span *ngFor="let person of people; index as i">
         <a href="{{ person.url }}" [eventTracker]='{"category":"person","action":person.url}'

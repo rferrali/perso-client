@@ -1,6 +1,6 @@
 <div class="card">
   <div class="card-body">
-    <div *ngIf="(mode == 'edit' && course.id == edittedId) || (mode == 'create' && new); then editBlock; else displayBlock">
+    <div *ngIf="editable; then editBlock; else displayBlock">
 
     </div>
   </div>
@@ -24,10 +24,10 @@
   <div>
     <span>{{ course.term }}. {{ course.level }}. {{ course.role }} </span>
     <span *ngIf="course.people.length > 0">for </span>
-    <app-people-edit [peopleForm]="people" [mode]="mode"></app-people-edit>
+    <app-people-edit [peopleForm]="people" [editable]="editable"></app-people-edit>
   </div>
   <div>
-    <app-buttons [btns]="btns" [mode]="mode">
+    <app-buttons [btns]="btns" [editable]="editable">
       <a class="btn btn-sm btn-primary btn-list" href="javascript:;" (click)="showDetails = !showDetails">
         <i class="fa fa-plus"></i> Details</a>
     </app-buttons>
@@ -77,12 +77,12 @@
 
     <div>
         <span>For </span>
-        <app-people-edit [peopleForm]="people" [mode]="mode">
+        <app-people-edit [peopleForm]="people" [editable]="editable">
         </app-people-edit>
     </div>
 
     <div>
-      <app-buttons [btns]="btns" [mode]="mode">
+      <app-buttons [btns]="btns" [editable]="editable">
         <a class="btn btn-sm btn-primary btn-list" href="javascript:;" (click)="showDetails = !showDetails">
           <i class="fa fa-plus"></i> Details</a>
       </app-buttons>

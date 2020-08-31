@@ -10,8 +10,7 @@ import { StoreService } from '../store.service';
 })
 export class PeopleEditComponent implements OnChanges {
 
-  @Input() mode: string; 
-  @Input() editMode: boolean; 
+  @Input() editable: boolean; 
   allPeople: Person[]; 
   people: Person[]; 
   @Input() peopleForm: FormArray; 

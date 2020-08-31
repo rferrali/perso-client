@@ -12,7 +12,7 @@ import { StoreService } from '../store.service'
 export class ButtonsComponent implements OnChanges {
 
   @Input() btns: FormGroup; 
-  @Input() mode: string; 
+  @Input() editable: boolean; 
   sortableButtons: Button[]; 
   showButton = false; 
   get buttons() {

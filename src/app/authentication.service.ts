@@ -52,7 +52,7 @@ export class AuthenticationService {
   }
 
   logout() {
-    // remove user from local storage to log user out
+    this.preview = true;
     localStorage.removeItem('currentUser');
     this._currentUser.next(null);
     this.router.navigate(['/']);  

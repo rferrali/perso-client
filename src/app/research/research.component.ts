@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Paper, Keyword } from '../model'; 
 import { StoreService } from '../store.service'; 
-import { AuthenticationService } from '../authentication.service'; 
 
 @Component({
   selector: 'app-research',
@@ -19,8 +18,7 @@ export class ResearchComponent implements OnInit {
   edittedId: number;
 
   constructor(
-    private store: StoreService, 
-    public auth: AuthenticationService
+    private store: StoreService
   ) { }
 
   ngOnInit() {

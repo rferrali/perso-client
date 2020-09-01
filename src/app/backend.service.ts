@@ -192,10 +192,8 @@ export class BackendService {
     );
   }
 
-  updatePapers (papers: Paper[]): Observable<Paper[]> {
-    return this.http.put<any[]>(this.papersUrl, papers, httpOptions).pipe(
-      switchMap(papers => of(papers.map(paper => new Paper(paper))))
-    );
+  updatePapers (papers: Paper[]): Observable<null> {
+    return this.http.put<null>(this.papersUrl, papers, httpOptions);
   }
 
   addPaper (paper: Paper): Observable<Paper> {

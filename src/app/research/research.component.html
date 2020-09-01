@@ -1,7 +1,5 @@
 <app-messages></app-messages>
 
-
-
 <div class="container">
   <app-keywords-select></app-keywords-select>
   <div class="row mb-5">
@@ -13,14 +11,14 @@
         <app-crud-buttons object="paper" [mode]="mode" (modeSelect)="modeSelect($event)"></app-crud-buttons>
       </app-section-header>
 
-      <div *ngIf="createMode" class="mt-1">
+      <div *ngIf="mode == 'create'" class="mt-1">
         <h3 class="mb-2 mt-3">New paper</h3>
-        <app-paper (edit)="onEdit($event)" [paper]="newPaper" [mode]="mode" [edittedId]="edittedId"></app-paper>
+        <app-paper (edit)="onEdit($event)" [mode]="mode" [edittedId]="edittedId" new></app-paper>
       </div>
 
       <div>
         <h3 class="mb-2 mt-3">Publications</h3>
-        <div *ngIf="!sortMode; else sortBlock2">
+        <div *ngIf="mode != 'sort'; else sortBlock2">
           <div *ngFor="let paper of papers2" class="mt-1">
             <app-paper (edit)="onEdit($event)" [paper]="paper" [mode]="mode" [edittedId]="edittedId"></app-paper>
           </div>
@@ -36,7 +34,7 @@
 
       <div>
         <h3 class="mb-2 mt-3">Working papers</h3>
-        <div *ngIf="!sortMode; else sortBlock1">
+        <div *ngIf="mode != 'sort'; else sortBlock1">
           <div *ngFor="let paper of papers1" class="mt-1">
             <app-paper (edit)="onEdit($event)" [paper]="paper" [mode]="mode" [edittedId]="edittedId"></app-paper>
           </div>
@@ -52,7 +50,7 @@
 
       <div>
         <h3 class="mb-2 mt-3">In progress</h3>
-        <div *ngIf="!sortMode; else sortBlock0">
+        <div *ngIf="mode != 'sort'; else sortBlock0">
           <div *ngFor="let paper of papers0" class="mt-1">
             <app-paper (edit)="onEdit($event)" [paper]="paper" [mode]="mode" [edittedId]="edittedId"></app-paper>
           </div>

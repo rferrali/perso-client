@@ -10,14 +10,18 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class KeywordsSelectComponent implements OnInit {
 
-  @Input() kFilter: Keyword; 
+  kFilter: string; 
   keywords: Keyword[]
 
   constructor(
     private store: StoreService, 
     private route: ActivatedRoute, 
     private router: Router
-  ) { }
+  ) { 
+    this.route.url.subscribe(url => {
+      this.kFilter = url.length == 2 ? url[1].path : undefined; 
+    });
+   }
 
   ngOnInit() {
     this.store.keywords.subscribe(x => {
@@ -29,11 +33,11 @@ export class KeywordsSelectComponent implements OnInit {
     if(!this.kFilter) {
       return false; 
     } else {
-      return this.kFilter.keyword == keyword.keyword; 
+      return this.kFilter == keyword.slug; 
     }
   }
 
-  goTo(keyword: Keyword): void {
+  goTo(keyword?: Keyword): void {
     if(keyword) {
       this.router.navigate(['/research', keyword.slug]); 
     } else {

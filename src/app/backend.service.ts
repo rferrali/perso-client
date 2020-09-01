@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Person, Paper, File, User, Me, Course, Keyword, Software, Dataset } from './model'
 import { HttpEventType } from '@angular/common/http'; 
-import { map } from  'rxjs/operators';
+import { map, switchMap } from  'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
 const httpOptions = {
@@ -57,7 +57,7 @@ export class BackendService {
   ////////////////////////////////////
 
   getPeople(): Observable<Person[]> {
-    return this.http.get<Person[]>(this.peopleUrl); 
+    return this.http.get<any[]>(this.peopleUrl);
   }
 
   getPerson(id: number): Observable<Person> {
@@ -181,25 +181,35 @@ export class BackendService {
   ////////////////////////////////////
 
   getPapers(): Observable<Paper[]> {
-    return this.http.get<Paper[]>(this.papersUrl);
+    return this.http.get<any[]>(this.papersUrl).pipe(
+      switchMap(papers => of(papers.map(paper => new Paper(paper))))
+    );
   }
 
-  updatePaper (paper: Paper): Observable<any> {
-    return this.http.put(`${this.papersUrl}/${paper.id}`, paper, httpOptions);
+  updatePaper (paper: Paper): Observable<Paper> {
+    return this.http.put<any>(`${this.papersUrl}/${paper.id}`, paper, httpOptions).pipe(
+      switchMap(paper => of(new Paper(paper)))
+    );
   }
 
-  updatePapers (papers: Paper[]): Observable<any> {
-    return this.http.put(this.papersUrl, papers, httpOptions);
+  updatePapers (papers: Paper[]): Observable<Paper[]> {
+    return this.http.put<any[]>(this.papersUrl, papers, httpOptions).pipe(
+      switchMap(papers => of(papers.map(paper => new Paper(paper))))
+    );
   }
 
   addPaper (paper: Paper): Observable<Paper> {
-    return this.http.post<Paper>(this.papersUrl, paper, httpOptions);
+    return this.http.post<any>(this.papersUrl, paper, httpOptions).pipe(
+      switchMap(paper => of(new Paper(paper)))
+    );
   }
 
   deletePaper (paper: Paper): Observable<Paper> {
     const id = paper.id;
     const url = `${this.papersUrl}/${id}`;
-    return this.http.delete<Paper>(url, httpOptions);
+    return this.http.delete<any>(url, httpOptions).pipe(
+      switchMap(paper => of(new Paper(paper)))
+    );
   }
 
   ////////////////////////////////////

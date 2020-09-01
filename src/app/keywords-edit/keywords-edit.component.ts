@@ -1,35 +1,58 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnChanges, Input } from '@angular/core';
 import { Keyword } from '../model'; 
-import { FormArray, FormBuilder } from '@angular/forms';
-import { StoreService } from '../store.service'
+import { FormArray, FormGroup } from '@angular/forms';
+import { StoreService } from '../store.service';
+import { ActivatedRoute } from '@angular/router';
+
 
 @Component({
   selector: 'app-keywords-edit',
   templateUrl: './keywords-edit.component.html',
   styleUrls: ['./keywords-edit.component.scss']
 })
-export class KeywordsEditComponent implements OnInit {
+export class KeywordsEditComponent implements OnChanges {
 
-  @Input() editMode: boolean; 
-  @Input() allKeywords: Keyword[]; 
-  @Input() keywords: Keyword[]; 
-  @Input() keywordsForm: FormArray; 
-  @Input() kFilter: Keyword; 
+  @Input() editable: boolean; 
+  allKeywords: Keyword[]; 
+  @Input() keywords: FormGroup; 
+  keywordsArray: Keyword[]; 
+  kFilter: string; 
+
+  get keywordsFormArray() {
+    return this.keywords.get('keywords') as FormArray;
+  }
 
   constructor(
-    private fb: FormBuilder, 
-    private store: StoreService
-  ) { }
+    private store: StoreService, 
+    private router: ActivatedRoute
+  ) { 
+    this.router.url.subscribe(url => {
+      this.kFilter = url.length == 2 ? url[1].path : undefined; 
+    });
+   }
 
   test(keyword: Keyword): boolean {
     if(!this.kFilter) {
       return false; 
     } else {
-      return this.kFilter.keyword == keyword.keyword; 
+      return this.kFilter == keyword.slug; 
     }
   }
   
 
-  ngOnInit() {}
+  ngOnChanges() {
+    this.store.keywords.subscribe(keywords => {
+      this.allKeywords = keywords
+        .sort(function(a, b){
+          var x = a.keyword.toLowerCase();
+          var y = b.keyword.toLowerCase();
+          if (x < y) {return -1;}
+          if (x > y) {return 1;}
+          return 0;
+        }); 
+      this.keywordsArray = this.allKeywords
+        .filter((value, i) => this.keywordsFormArray.value[i]);
+    });
+  }
 
 }

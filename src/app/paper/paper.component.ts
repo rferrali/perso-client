@@ -2,8 +2,6 @@ import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { Paper, Person, Keyword } from '../model'; 
 import { FormArray, FormBuilder, Validators, FormGroup } from '@angular/forms'
 import { StoreService } from '../store.service'; 
-import { AuthenticationService } from '../authentication.service'; 
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-paper',
@@ -13,38 +11,58 @@ import { ActivatedRoute } from '@angular/router';
 export class PaperComponent implements OnInit {
 
   @Input() paper: Paper; 
-  @Input() disableEdit: boolean; 
-  @Input() editMode: boolean; 
-  @Input() deleteMode: boolean;
-  @Input() kFilter: Keyword; 
-  @Output() isEditMode = new EventEmitter<boolean>(); 
-  @Output() deleteEvent = new EventEmitter<Paper>(); 
+  @Input() mode: string; 
+  @Input() edittedId: number;
+  private _new: boolean;
+  @Input() get new() {
+    return this._new;
+  }
+  set new(value: any) {
+    this._new = !(value === undefined);
+  }
+  @Output() delete = new EventEmitter<Paper>();
+  @Output() edit = new EventEmitter<number>();
   people: Person[]; 
 
   editForm: FormGroup; 
   showAbstract = false;
-  sortableButtons: any;
-  sortableCoauthors: any; 
-  otherAuthors: Person[];
   allKeywords: Keyword[]; 
-  
+  get editable(): boolean {
+    return (this.mode == 'edit' && this.paper.id == this.edittedId) || (this.mode == 'create' && this.new)
+  } 
   get btns() { 
     return this.editForm.get('btns') as FormGroup; 
    }
-  
   get coauthors() { 
     return this.editForm.get('coauthors') as FormArray;
   }
-
   get keywords() { 
-    return this.editForm.get('keywords') as FormArray;
+    return this.editForm.get('keywordsGroup') as FormGroup;
   }
+
+  constructor(
+    private store: StoreService, 
+    private fb: FormBuilder
+  ) { }
+
+  ngOnInit() { 
+    if (!this.paper) this.paper = new Paper;
+    this.store.keywords.subscribe(keywords => { 
+      this.allKeywords = keywords
+        .sort(function(a, b){
+          var x = a.keyword.toLowerCase();
+          var y = b.keyword.toLowerCase();
+          if (x < y) {return -1;}
+          if (x > y) {return 1;}
+          return 0;
+        });
+      this.createEditForm(); 
+    }); 
+   }
 
   enableEdit(): void {
-    this.editMode = true; 
-    this.isEditMode.emit(true); 
+    this.edit.emit(this.paper.id);
   }
-
 
   createEditForm(): void {
 
@@ -68,33 +86,36 @@ export class PaperComponent implements OnInit {
           })
         }), 
         coauthors: this.fb.array(this.paper.coauthors.map(coauthor => this.fb.group(coauthor))), 
-        keywords: this.fb.array(
-          this.allKeywords.map(keyword => {
-            return this.fb.control(this.paper.keywords.some(h => h.id == keyword.id))
-          })
-        )
+        keywordsGroup: this.fb.group({
+          keywords: this.fb.array(
+            this.allKeywords.map(keyword => {
+              return this.fb.control(this.paper.keywords.map(k => k.id).includes(keyword.id))
+            })
+          )
+        })
     })
   }
 
   onSubmit(): void {
-
     let form = this.editForm.value; 
     form.buttons = form.btns.buttons; 
     delete form.btns; 
-    let test = form.keywords; 
+    const test = form.keywordsGroup.keywords; 
+    delete form.keywordsGroup; 
+    form.keywords = this.allKeywords.filter((value, index) => test[index]);
     form.keywords = []; 
     for(let i in test) {
       if(test[i]) {
         form.keywords.push(this.allKeywords[i]); 
       }
     }
-    this.paper = form as Paper; 
+    this.paper = new Paper(form); 
     if(this.paper.id) {
       this.store.updatePaper(this.paper);
     } else {
       this.store.addPaper(this.paper);
     }
-    this.isEditMode.emit(false);
+    this.edit.emit(this.paper.id);
   }
 
   onRestore(): void {
@@ -113,77 +134,32 @@ export class PaperComponent implements OnInit {
         })
       })
     ); 
-    
     this.editForm.setControl(
       'coauthors', 
       this.fb.array(
         this.paper.coauthors.map(x => this.fb.group(x))
         )
     );
-
     this.editForm.setControl(
-      'keywords',
-       this.fb.array(
-        this.allKeywords.map(keyword => {
-          return this.fb.control(this.paper.keywords.some(h => h.id == keyword.id))
-        })
-       )
+      'keywordsGroup',
+      this.fb.group({
+        keywords: this.fb.array(
+          this.allKeywords.map(keyword => {
+            return this.fb.control(this.paper.keywords.map(k => k.id).includes(keyword.id))
+          })
+        )
+      })
     )
-    
-    this.sortableButtons = this.btns.get('buttons').value; 
-    this.sortableCoauthors = this.coauthors.value; 
-    let coauthors = this.paper.coauthors.map(x => x.id);
-    this.otherAuthors = this.people.filter(x => !coauthors.includes(x.id) ); 
-
-    // autosize.update($('.autosize'));
   }
 
   onCancel(): void {
     this.onRestore(); 
-    this.editMode = false; 
-    this.isEditMode.emit(false); 
+    this.edit.emit(this.paper.id);
   }
   
   onDelete(paper: Paper): void {
-    this.deleteEvent.emit(paper); 
+    this.delete.emit(paper); 
   }
-
-  
-
-  // initialization
-
-  constructor(
-    private store: StoreService, 
-    private fb: FormBuilder, 
-    private auth: AuthenticationService, 
-    private route: ActivatedRoute
-  ) { }
-
-  ngOnInit() { 
-    if(!this.paper.buttons) this.paper.buttons = []; 
-    if(!this.paper.coauthors) this.paper.coauthors = []; 
-    if(!this.paper.keywords) this.paper.keywords = [];
-    this.paper.keywords.sort(function(a, b){
-      var x = a.keyword.toLowerCase();
-      var y = b.keyword.toLowerCase();
-      if (x < y) {return -1;}
-      if (x > y) {return 1;}
-      return 0;
-    });
-    this.store.keywords.subscribe(keywords => { 
-      this.allKeywords = keywords; 
-      this.createEditForm(); 
-    }); 
-    console.log(this.paper);
-    this.sortableButtons = this.btns.get('buttons').value;
-    this.sortableCoauthors = this.coauthors.value;
-    let coauthors = this.paper.coauthors.map(x => x.id);
-    this.store.people.subscribe(people => {this.people = people}); 
-    this.otherAuthors = this.people.filter(x => !coauthors.includes(x.id) ); 
-    // $(document).ready(() => {
-    //   autosize($('.autosize'));
-    // });
-   }
 
    
 }

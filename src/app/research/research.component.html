@@ -6,38 +6,23 @@
   <app-keywords-select [kFilter]="kFilter"></app-keywords-select>
   <div class="row mb-5">
     <div class="col">
-      <div *ngIf="! auth.preview" class="text-right mb-3">
-        <div class="btn-group">
-          <button class="btn btn-danger" (click)="onDelete()" [disabled]="sortMode || editMode || createMode">
-            <i class="fa fa-trash"></i>
-            <span *ngIf="deleteMode">&nbsp; Done</span>
-          </button>
-          <button *ngIf="!kFilter" class="btn btn-dark" (click)="onSort()"
-            [disabled]="deleteMode || editMode || createMode">
-            <i class="fa fa-sort"></i>
-            <span *ngIf="sortMode">&nbsp; Done</span>
-          </button>
-          <button class="btn btn-dark" (click)="onCreate()"
-            [disabled]="sortMode || deleteMode || createMode || editMode">
-            <i class="fa fa-plus"></i>
-            <span *ngIf="!(sortMode || deleteMode)">&nbsp; New paper</span>
-          </button>
-
-        </div>
-      </div>
+      <app-section-header>
+        <span>
+          <h1>Research</h1>
+        </span>
+        <app-crud-buttons object="paper" [mode]="mode" (modeSelect)="modeSelect($event)"></app-crud-buttons>
+      </app-section-header>
 
       <div *ngIf="createMode" class="mt-1">
         <h3 class="mb-2 mt-3">New paper</h3>
-          <app-paper [paper]="newPaper" [disableEdit]="disableEdit" [editMode]="true" [deleteMode]="deleteMode"
-            (isEditMode)="onEdit($event)" (deleteEvent)="onDeleteEvent($event)"></app-paper>
+        <app-paper (edit)="onEdit($event)" [paper]="newPaper" [mode]="mode" [edittedId]="edittedId"></app-paper>
       </div>
 
       <div>
         <h3 class="mb-2 mt-3">Publications</h3>
         <div *ngIf="!sortMode; else sortBlock2">
           <div *ngFor="let paper of papers2" class="mt-1">
-            <app-paper [paper]="paper" [disableEdit]="disableEdit" [editMode]="false" [deleteMode]="deleteMode"
-              [kFilter]="kFilter" (isEditMode)="onEdit($event)" (deleteEvent)="onDeleteEvent($event)"></app-paper>
+            <app-paper (edit)="onEdit($event)" [paper]="paper" [mode]="mode" [edittedId]="edittedId"></app-paper>
           </div>
         </div>
 
@@ -53,8 +38,7 @@
         <h3 class="mb-2 mt-3">Working papers</h3>
         <div *ngIf="!sortMode; else sortBlock1">
           <div *ngFor="let paper of papers1" class="mt-1">
-            <app-paper [paper]="paper" [disableEdit]="disableEdit" [editMode]="false" [deleteMode]="deleteMode"
-              [kFilter]="kFilter" (isEditMode)="onEdit($event)" (deleteEvent)="onDeleteEvent($event)"></app-paper>
+            <app-paper (edit)="onEdit($event)" [paper]="paper" [mode]="mode" [edittedId]="edittedId"></app-paper>
           </div>
         </div>
 
@@ -67,33 +51,29 @@
       </div>
 
       <div>
-          <h3 class="mb-2 mt-3">In progress</h3>
-          <div *ngIf="!sortMode; else sortBlock0">
-            <div *ngFor="let paper of papers0" class="mt-1">
-              <app-paper [paper]="paper" [disableEdit]="disableEdit" [editMode]="false" [deleteMode]="deleteMode"
-                [kFilter]="kFilter" (isEditMode)="onEdit($event)" (deleteEvent)="onDeleteEvent($event)"></app-paper>
-            </div>
+        <h3 class="mb-2 mt-3">In progress</h3>
+        <div *ngIf="!sortMode; else sortBlock0">
+          <div *ngFor="let paper of papers0" class="mt-1">
+            <app-paper (edit)="onEdit($event)" [paper]="paper" [mode]="mode" [edittedId]="edittedId"></app-paper>
           </div>
-  
-          <ng-template #sortBlock0>
-            <bs-sortable [(ngModel)]="papers0" [itemTemplate]="itemTemplate" itemClass="sortable-item mt-1"
-              itemActiveClass="sortable-item-active" placeholderItem="Drag here" placeholderClass="placeholderStyle"
-              wrapperClass="sortable-wrapper list-group">
-            </bs-sortable>
-          </ng-template>
         </div>
 
+        <ng-template #sortBlock0>
+          <bs-sortable [(ngModel)]="papers0" [itemTemplate]="itemTemplate" itemClass="sortable-item mt-1"
+            itemActiveClass="sortable-item-active" placeholderItem="Drag here" placeholderClass="placeholderStyle"
+            wrapperClass="sortable-wrapper list-group">
+          </bs-sortable>
+        </ng-template>
+      </div>
+
     </div>
-
-    
-
   </div>
 </div>
 
 <!-- LONE BLOCK -->
 
 <ng-template #itemTemplate let-item="item" let-index="index">
-    <app-paper [paper]="item.value" [disableEdit]="true" [editMode]="false" [deleteMode]="false"
-      [kFilter]="kFilter">
-    </app-paper>
-  </ng-template>
+  <app-paper (edit)="onEdit($event)" [paper]="item.value" [mode]="mode"
+    [edittedId]="edittedId">
+  </app-paper>
+</ng-template>

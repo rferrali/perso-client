@@ -1,16 +1,16 @@
-<div *ngIf="editMode; then editBlock; else displayBlock"></div>
+<div *ngIf="editable; then editBlock; else displayBlock"></div>
 
 
 <ng-template #displayBlock>
-  <div *ngIf="keywords.length > 0" class="mb-2">
-    <span *ngFor="let keyword of keywords; index as i">
+  <div *ngIf="keywordsArray.length > 0" class="mb-2">
+    <span *ngFor="let keyword of keywordsArray; index as i">
       <span *ngIf="test(keyword); else noMatch">
-          <a routerLink="/research" class="btn btn-sm mr-1 btn-primary">
+          <a routerLink="/research" class="btn btn-sm mr-1 mb-1 btn-primary">
             <i [class]="keyword.icon"></i> {{ keyword.keyword }}
           </a>
       </span>
       <ng-template #noMatch>
-          <a routerLink="/research/{{ keyword.slug }}" class="btn btn-sm mr-1 btn-outline-primary">
+          <a routerLink="/research/{{ keyword.slug }}" class="btn btn-sm mr-1 mb-1 btn-outline-primary">
             <i [class]="keyword.icon"></i> {{ keyword.keyword }}
           </a>
       </ng-template>
@@ -19,12 +19,12 @@
 </ng-template>
 
 <ng-template #editBlock>
-  <div [formGroup]="keywordsForm" class="form-group">
+  <div [formGroup]="keywords" class="form-group">
     Keywords: 
-    <div *ngFor="let keyword of allKeywords; let i=index" class="form-check form-check-inline">
-      <input class="form-check-input" type="checkbox" [formControlName]="i">
+    <div *ngFor="let keyword of keywordsFormArray.controls; let i=index" class="form-check form-check-inline">
+      <input class="form-check-input" type="checkbox" [formControl]="keywordsFormArray.controls[i]">
       <label class="form-check-label">
-          <i [class]="keyword.icon"></i> {{ keyword.keyword }}
+          <i [class]="allKeywords[i].icon"></i> {{ allKeywords[i].keyword }}
       </label>
     </div>
   </div>

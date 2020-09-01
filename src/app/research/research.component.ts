@@ -26,6 +26,8 @@ export class ResearchComponent implements OnInit {
   kFilter: Keyword; 
   title = 'Research'; 
   subtitle = 'My research'; 
+  mode = 'none';
+  edittedId: number;
 
   constructor(
     private store: StoreService, 
@@ -58,31 +60,29 @@ export class ResearchComponent implements OnInit {
     }); 
   }
 
-  onEdit(event: boolean): void {
-    this.editMode = event; 
-    this.disableEdit = event;
-    if(!this.editMode) {
-      this.createMode = false; 
+  modeSelect(e: string) {
+    if(this.mode == 'sort' && e == 'none') {
+      let len = this.papers.length;
+      var i; 
+      for (i=0; i<len; i++) {
+        this.papers[i].order = i; 
+      }
+      this.store.updatePapers(this.papers);
+    }
+    this.mode = e;  
+  }
+
+  onEdit(e: number): void {
+    if(this.mode == 'none') {
+      this.mode = 'edit';
+      this.edittedId = e; 
+    } else {
+      this.mode = 'none';
+      this.edittedId = null; 
     }
   }
 
-  onCreate(): void {
-    this.editMode = false; 
-    this.deleteMode = false; 
-    this.sortMode = false; 
-    this.createMode = true; 
-    this.disableEdit = true; 
-  }
-
-  onDelete(): void {
-    this.deleteMode = !this.deleteMode; 
-    this.editMode = false; 
-    this.sortMode = false; 
-    this.createMode = false; 
-    this.disableEdit = !this.disableEdit; 
-  }
-
-  onDeleteEvent(event: any): void {
+  onDelete(event: Paper): void {
     this.store.deletePaper(event); 
   }
 

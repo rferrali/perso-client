@@ -1,45 +1,45 @@
 <div class="card">
+  <div class="bg-warning">
+    <p>editable: {{editable}}</p>
+    <p>mode: {{mode}}</p>
+  </div>
   <div class="card-body">
-    <div *ngIf="!editMode; then displayBlock; else editBlock">
+    <div *ngIf="editable; then editBlock; else displayBlock">
 
     </div>
   </div>
 </div>
 
 <ng-template #displayBlock>
-  <div class="d-flex justify-content-between">
-    <div>
+  <app-section-header>
+    <span>
       <span><strong style="font-weight: 500;">{{ paper.title }}</strong> </span>
       <span *ngIf="paper.coauthors.length > 0">, with </span>
-      <app-people-edit [peopleForm]="coauthors">
-      </app-people-edit>
-    </div>
+      <app-people-edit [peopleForm]="coauthors" [editable]="editable"></app-people-edit>
+    </span>
     <div>
-      <button *ngIf="!disableEdit && ! auth.preview" class="btn btn-sm btn-dark" type="button"
-        (click)="enableEdit()">
+      <button *ngIf="mode == 'none'" class="btn btn-dark" type="button" (click)="enableEdit()">
         <i class="fa fa-edit"></i>
       </button>
-      <button *ngIf="deleteMode  && ! auth.preview" class="btn btn-sm btn-danger btn-outline"
-        type="button" (click)="onDelete(paper)">
+      <button *ngIf="mode == 'delete'" class="btn btn-danger btn-outline" type="button"
+        (click)="onDelete()">
         <i class="fa fa-trash"></i>
       </button>
     </div>
-  </div>
+  </app-section-header>
   <div *ngIf="paper.status" class="mb-2" [innerHtml]="paper.status"></div>
   <div *ngIf="paper.keywords.length > 0" class="clearfix mb-2">
-    <app-keywords-edit [editMode]="editMode" [keywords]="paper.keywords" [kFilter]="kFilter">
+    <app-keywords-edit [editable]="editable" [keywords]="keywords">
     </app-keywords-edit>
   </div>
 
-  <div class="clearfix">
-    <span class="float-left pull-left">
-      <a class="btn btn-sm btn-primary mr-1" href="javascript:;" (click)="showAbstract = !showAbstract"
+  <div>
+    <app-buttons [btns]="btns" [editable]="editable">
+      <a class="btn btn-sm btn-primary btn-list" href="javascript:;" (click)="showAbstract = !showAbstract"
         [eventTracker]='{"category":"button","action":"abstract: " + paper.title}'>
         <i class="fa fa-plus"></i> Abstract</a>
-      <button class="btn btn-sm btn-primary mr-1" app-citation-export [citation]="paper.citation"
+      <button class="btn btn-sm btn-primary btn-list" app-citation-export [citation]="paper.citation"
         *ngIf="paper.citation"></button>
-    </span>
-    <app-buttons [btns]="btns">
     </app-buttons>
   </div>
   <p class="card-text mt-2" [collapse]="!showAbstract">
@@ -65,24 +65,21 @@
       <input type="text" class="form-control" formControlName="citation" placeholder="Citation">
     </div>
 
-    <div class="clearfix">
-      <span class="mr-1 float-left pull-left">With</span>
-      <app-people-edit [peopleForm]="coauthors">
+    <div>
+      <span>With </span>
+      <app-people-edit [peopleForm]="coauthors" [editable]="editable">
       </app-people-edit>
-    </div>
+  </div>
 
     <div class="clearfix mb-2">
-      <app-keywords-edit [editMode]="editMode" [keywords]="paper.keywords" [keywordsForm]="keywords"
-        [allKeywords]="allKeywords">
+      <app-keywords-edit [editable]="editable" [keywords]="keywords">
       </app-keywords-edit>
     </div>
 
-    <div class="clearfix">
-      <span class="mr-1 float-left pull-left">
-        <a class="btn btn-sm btn-primary" href="javascript:;" (click)="showAbstract = !showAbstract">
+    <div>
+      <app-buttons [btns]="btns" [editable]="editable">
+        <a class="btn btn-sm btn-primary btn-list" href="javascript:;" (click)="showAbstract = !showAbstract">
           <i class="fa fa-plus"></i> Abstract</a>
-      </span>
-      <app-buttons [btns]="btns">
       </app-buttons>
     </div>
 

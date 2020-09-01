@@ -21,9 +21,31 @@ export class Paper {
     status: string;
     order: number;
     type: number; 
-    coauthors: Person[]; 
-    buttons: Button[]; 
-    keywords: Keyword[]; 
+    coauthors = [] as Person[]; 
+    buttons = [] as Button[]; 
+    keywords = [] as Keyword[]; 
+
+    constructor(object?: any) {
+        if(object) {
+            this.id = object.id; 
+            this.title = object.title; 
+            this.abstract = object.abstract; 
+            this.citation = object.citation; 
+            this.year = object.year; 
+            this.status = object.status; 
+            this.order = object.order; 
+            this.type = object.type; 
+            this.coauthors = object.coauthors; 
+            this.buttons = object.buttons; 
+            this.keywords = object.keywords.sort(function(a, b){
+                var x = a.keyword.toLowerCase();
+                var y = b.keyword.toLowerCase();
+                if (x < y) {return -1;}
+                if (x > y) {return 1;}
+                return 0;
+              });
+        }
+    }
 }
 
 export class Software {

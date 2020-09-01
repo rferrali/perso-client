@@ -7,9 +7,9 @@
 </div>
 
 <ng-template #displayBlock>
-  <app-section-header class="card-title">
+  <app-section-header>
     <span>
-      <h5>{{ course.name }}</h5>
+      <h5 class="card-title">{{ course.name }}</h5>
     </span>
     <div>
       <button *ngIf="mode == 'none'" class="btn btn-dark" type="button" (click)="enableEdit()">

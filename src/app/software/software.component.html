@@ -1,8 +1,4 @@
 <div class="card">
-  <div class="bg-warning">
-    <p>sortableButtons: {{ sortableButtons | json }}</p>
-    <p>buttons: {{ software.buttons | json }}</p>
-  </div>
     <div class="card-body">
       <div *ngIf="(mode == 'edit' && software.id == edittedId) || (mode == 'create' && new); then editBlock; else displayBlock">
   

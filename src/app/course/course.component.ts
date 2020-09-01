@@ -22,20 +22,14 @@ export class CourseComponent implements OnInit {
   }
   @Output() delete = new EventEmitter<Course>();
   @Output() edit = new EventEmitter<number>();
-  allPeople: Person[]; 
   get editable(): boolean {
     return (this.mode == 'edit' && this.course.id == this.edittedId) || (this.mode == 'create' && this.new)
   } 
-
   editForm: FormGroup; 
   showDetails = false;
   get btns() { 
     return this.editForm.get('btns') as FormGroup; 
    }
-  
-   sortablePeople: any; 
-   otherPeople: Person[]; 
-
   get people() { 
     return this.editForm.get('people') as FormArray;
   }

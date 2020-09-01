@@ -20,7 +20,7 @@
         <h3 class="mb-2 mt-3">Publications</h3>
         <div *ngIf="mode != 'sort'; else sortBlock2">
           <div *ngFor="let paper of papers2" class="mt-1">
-            <app-paper (edit)="onEdit($event)" [paper]="paper" [mode]="mode" [edittedId]="edittedId"></app-paper>
+            <app-paper (edit)="onEdit($event)" [object]="paper" [mode]="mode" [edittedId]="edittedId"></app-paper>
           </div>
         </div>
 
@@ -36,7 +36,7 @@
         <h3 class="mb-2 mt-3">Working papers</h3>
         <div *ngIf="mode != 'sort'; else sortBlock1">
           <div *ngFor="let paper of papers1" class="mt-1">
-            <app-paper (edit)="onEdit($event)" [paper]="paper" [mode]="mode" [edittedId]="edittedId"></app-paper>
+            <app-paper (edit)="onEdit($event)" [object]="paper" [mode]="mode" [edittedId]="edittedId"></app-paper>
           </div>
         </div>
 
@@ -52,7 +52,7 @@
         <h3 class="mb-2 mt-3">In progress</h3>
         <div *ngIf="mode != 'sort'; else sortBlock0">
           <div *ngFor="let paper of papers0" class="mt-1">
-            <app-paper (edit)="onEdit($event)" [paper]="paper" [mode]="mode" [edittedId]="edittedId"></app-paper>
+            <app-paper (edit)="onEdit($event)" [object]="paper" [mode]="mode" [edittedId]="edittedId"></app-paper>
           </div>
         </div>
 
@@ -71,7 +71,7 @@
 <!-- LONE BLOCK -->
 
 <ng-template #itemTemplate let-item="item" let-index="index">
-  <app-paper (edit)="onEdit($event)" [paper]="item.value" [mode]="mode"
+  <app-paper (edit)="onEdit($event)" [object]="item.value" [mode]="mode"
     [edittedId]="edittedId">
   </app-paper>
 </ng-template>

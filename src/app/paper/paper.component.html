@@ -9,9 +9,9 @@
 <ng-template #displayBlock>
   <app-section-header>
     <span>
-      <span><strong style="font-weight: 500;">{{ paper.title }}</strong> </span>
-      <span *ngIf="paper.coauthors.length > 0">, with </span>
-      <app-people-edit [peopleForm]="coauthors" [editable]="editable"></app-people-edit>
+      <span><strong style="font-weight: 500;">{{ object.title }}</strong> </span>
+      <span *ngIf="object.people.length > 0">, with </span>
+      <app-people-edit [peopleForm]="people" [editable]="editable"></app-people-edit>
     </span>
     <div>
       <button *ngIf="mode == 'none'" class="btn btn-dark" type="button" (click)="enableEdit()">
@@ -23,23 +23,23 @@
       </button>
     </div>
   </app-section-header>
-  <div *ngIf="paper.status" class="mb-2" [innerHtml]="paper.status"></div>
-  <div *ngIf="paper.keywords.length > 0" class="clearfix mb-2">
+  <div *ngIf="object.status" class="mb-2" [innerHtml]="object.status"></div>
+  <div *ngIf="object.keywords.length > 0" class="clearfix mb-2">
     <app-keywords-edit [editable]="editable" [keywords]="keywords">
     </app-keywords-edit>
   </div>
 
   <div>
-    <app-buttons [btns]="btns" [editable]="editable">
-      <a class="btn btn-sm btn-primary btn-list" href="javascript:;" (click)="showAbstract = !showAbstract"
-        [eventTracker]='{"category":"button","action":"abstract: " + paper.title}'>
+    <app-buttons [btns]="buttons" [editable]="editable">
+      <a class="btn btn-sm btn-primary btn-list" href="javascript:;" (click)="showSummary = !showSummary"
+        [eventTracker]='{"category":"button","action":"abstract: " + object.title}'>
         <i class="fa fa-plus"></i> Abstract</a>
-      <button class="btn btn-sm btn-primary btn-list" app-citation-export [citation]="paper.citation"
-        *ngIf="paper.citation"></button>
+      <button class="btn btn-sm btn-primary btn-list" app-citation-export [citation]="object.citation"
+        *ngIf="object.citation"></button>
     </app-buttons>
   </div>
-  <p class="card-text mt-2" [collapse]="!showAbstract">
-    {{ paper.abstract }}
+  <p class="card-text mt-2" [collapse]="!showSummary">
+    {{ object.abstract }}
   </p>
 </ng-template>
 
@@ -63,7 +63,7 @@
 
     <div>
       <span>With </span>
-      <app-people-edit [peopleForm]="coauthors" [editable]="editable">
+      <app-people-edit [peopleForm]="people" [editable]="editable">
       </app-people-edit>
   </div>
 
@@ -73,14 +73,14 @@
     </div>
 
     <div>
-      <app-buttons [btns]="btns" [editable]="editable">
-        <a class="btn btn-sm btn-primary btn-list" href="javascript:;" (click)="showAbstract = !showAbstract">
+      <app-buttons [btns]="buttons" [editable]="editable">
+        <a class="btn btn-sm btn-primary btn-list" href="javascript:;" (click)="showSummary = !showSummary">
           <i class="fa fa-plus"></i> Abstract</a>
       </app-buttons>
     </div>
 
 
-    <div class="form-group mt-3" [collapse]="!showAbstract">
+    <div class="form-group mt-3" [collapse]="!showSummary">
       <textarea class="form-control" rows=5 formControlName="abstract" placeholder="Abstract"></textarea>
     </div>
 

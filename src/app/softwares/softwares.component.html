@@ -8,7 +8,7 @@
 
       <div *ngIf="mode != 'sort'; else sortBlock">
         <div *ngFor="let software of softwares" class="mt-1">
-          <app-software [software]="software" [mode]="mode" [edittedId]="edittedId"
+          <app-software [object]="software" [mode]="mode" [edittedId]="edittedId"
             (edit)="onEdit($event)" (delete)="onDeleteEvent($event)"></app-software>
         </div>
         <div *ngIf="mode == 'create'" class="mt-1">
@@ -23,7 +23,7 @@
           wrapperClass="sortable-wrapper list-group">
         </bs-sortable>
         <ng-template #itemTemplate let-item="item" let-index="index">
-          <app-software [software]="item.value" [edittedId]="edittedId">
+          <app-software [object]="item.value" [edittedId]="edittedId">
           </app-software>
         </ng-template>
       </ng-template>

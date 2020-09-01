@@ -1,6 +1,6 @@
 <div class="card">
     <div class="card-body">
-      <div *ngIf="(mode == 'edit' && software.id == edittedId) || (mode == 'create' && new); then editBlock; else displayBlock">
+      <div *ngIf="(mode == 'edit' && object.id == edittedId) || (mode == 'create' && new); then editBlock; else displayBlock">
   
       </div>
     </div>
@@ -9,7 +9,7 @@
   <ng-template #displayBlock>
     <app-section-header class="card-title">
       <span>
-        <h5><span class="my-code">{{software.name}}</span>. {{ software.slug }}</h5>
+        <h5><span class="my-code">{{object.name}}</span>. {{ object.slug }}</h5>
       </span>
       <div>
         <button *ngIf="mode == 'none'" class="btn btn-dark" type="button" (click)="enableEdit()">
@@ -22,12 +22,12 @@
       </div>
     </app-section-header>
     <div>
-      <app-buttons [btns]="btns" [editable]="editable">
-        <a class="btn btn-sm btn-primary btn-list" href="javascript:;" (click)="showDetails = !showDetails">
+      <app-buttons [btns]="buttons" [editable]="editable">
+        <a class="btn btn-sm btn-primary btn-list" href="javascript:;" (click)="showSummary = !showSummary">
           <i class="fa fa-plus"></i> Details</a>
       </app-buttons>
     </div>
-    <p class="card-text mt-2" [collapse]="!showDetails" [innerHTML]="software.details"></p>
+    <p class="card-text mt-2" [collapse]="!showSummary" [innerHTML]="object.details"></p>
   </ng-template>
   
   
@@ -49,14 +49,14 @@
         </div>
     
         <div>
-          <app-buttons [btns]="btns" [editable]="editable">
-            <a class="btn btn-sm btn-primary btn-list" href="javascript:;" (click)="showDetails = !showDetails">
+          <app-buttons [btns]="buttons" [editable]="editable">
+            <a class="btn btn-sm btn-primary btn-list" href="javascript:;" (click)="showSummary = !showSummary">
               <i class="fa fa-plus"></i> Details</a>
           </app-buttons>
         </div>
     
     
-        <div class="form-group mt-3" [collapse]="!showDetails">
+        <div class="form-group mt-3" [collapse]="!showSummary">
           <textarea class="form-control" rows=5 formControlName="details" placeholder="Details"></textarea>
         </div>
         <div *ngIf="editForm.get('details').invalid && editForm.get('details').touched" class="bad-feedback">

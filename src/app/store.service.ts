@@ -155,7 +155,7 @@ export class StoreService {
         newPeople = newPeople.filter(h => h !== person);
         let newPapers: Paper[] = this._papers.getValue(); 
         newPapers = newPapers.map(paper => {
-          paper.coauthors = paper.coauthors.filter(h => h.id != person.id); 
+          paper.people = paper.people.filter(h => h.id != person.id); 
           return paper; 
         }); 
         this._people.next(newPeople);
@@ -176,13 +176,14 @@ export class StoreService {
   }
 
   updatePaper (paper: Paper): void {
+    console.log(paper);
     this.backend.updatePaper(paper).
-    subscribe(() => {
-      let newPapers: Paper[] = this._papers.getValue();
-      let id: number = newPapers.findIndex(h => h.id == paper.id); 
-      newPapers[id] = paper; 
-      this._papers.next(newPapers); 
-    })
+      subscribe(() => {
+        let newPapers: Paper[] = this._papers.getValue();
+        let id: number = newPapers.findIndex(h => h.id == paper.id); 
+        newPapers[id] = paper; 
+        this._papers.next(newPapers); 
+      });
   }
 
   addPaper (paper: Paper): void {

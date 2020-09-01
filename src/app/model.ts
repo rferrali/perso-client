@@ -12,8 +12,24 @@ export class Button {
     content: string;
 }
 
-export class Paper {
-    id: number; 
+export class Listable {
+    id: number;
+    order: number; 
+    hasButtons: boolean;
+    hasPeople: boolean;
+    hasKeywords: boolean;
+    buttons?: Button[];
+    people?: Person[];
+    keywords?: Keyword[];
+    constructor(object?: any) {
+        if(object) {
+            this.id = object.id; 
+            this.order = object.order;
+        }
+    }
+}
+
+export class Paper extends Listable {
     title: string;
     abstract: string;
     citation: string;
@@ -21,21 +37,23 @@ export class Paper {
     status: string;
     order: number;
     type: number; 
-    coauthors = [] as Person[]; 
-    buttons = [] as Button[]; 
-    keywords = [] as Keyword[]; 
+    hasKeywords = true; 
+    hasPeople = true; 
+    hasButtons = true; 
+    buttons = [] as Button[];
+    people = [] as Person[];
+    keywords = [] as Keyword[];
 
     constructor(object?: any) {
+        super(object); 
         if(object) {
-            this.id = object.id; 
             this.title = object.title; 
             this.abstract = object.abstract; 
             this.citation = object.citation; 
             this.year = object.year; 
             this.status = object.status; 
-            this.order = object.order; 
             this.type = object.type; 
-            this.coauthors = object.coauthors; 
+            this.people = object.people; 
             this.buttons = object.buttons; 
             this.keywords = object.keywords.sort(function(a, b){
                 var x = a.keyword.toLowerCase();
@@ -48,22 +66,23 @@ export class Paper {
     }
 }
 
-export class Software {
-    id: number; 
+export class Software extends Listable {
     name: string; 
     slug: string; 
     details: string; 
-    order: number; 
-    buttons = [] as Button[]; 
+    hasKeywords = false; 
+    hasPeople = false; 
+    hasButtons = true;
+    keywords = [] as Keyword[];
 
     constructor(object?: any) {
+        super(object);
         if(object) {
             this.id = object.id; 
             this.name = object.name; 
             this.slug = object.slug; 
             this.details = object.details; 
-            this.order = object.order; 
-            this.buttons = object.buttons; 
+            this.buttons = object.buttons;
         } 
     }
 }
@@ -96,28 +115,28 @@ export class Keyword {
     slug: string;
 }
 
-export class Course {
-    id: number; 
+export class Course extends Listable {
     name: string; 
     term: string; 
     level: string; 
     details: string; 
     role: string; 
-    order: number; 
-    buttons = [] as Button[]; 
-    people = [] as Person[]; 
+    hasKeywords = false; 
+    hasPeople = true; 
+    hasButtons = true;
+    buttons = [] as Button[];
+    people = [] as Person[];
 
     constructor(object?: any) {
+        super(object);
         if(object) {
-            this.id = object.id;
             this.name = object.name;
             this.term = object.term;
             this.level = object.level;
             this.details = object.details;
             this.role = object.role;
-            this.order = object.order;
             this.buttons = object.buttons;
-            this.people = object.people;
+            this.people = object.people; 
         }
     }
 }

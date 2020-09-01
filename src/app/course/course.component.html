@@ -9,7 +9,7 @@
 <ng-template #displayBlock>
   <app-section-header>
     <span>
-      <h5 class="card-title">{{ course.name }}</h5>
+      <h5 class="card-title">{{ object.name }}</h5>
     </span>
     <div>
       <button *ngIf="mode == 'none'" class="btn btn-dark" type="button" (click)="enableEdit()">
@@ -22,17 +22,17 @@
     </div>
   </app-section-header>
   <div>
-    <span>{{ course.term }}. {{ course.level }}. {{ course.role }} </span>
-    <span *ngIf="course.people.length > 0">for </span>
+    <span>{{ object.term }}. {{ object.level }}. {{ object.role }} </span>
+    <span *ngIf="object.people.length > 0">for </span>
     <app-people-edit [peopleForm]="people" [editable]="editable"></app-people-edit>
   </div>
   <div>
-    <app-buttons [btns]="btns" [editable]="editable">
+    <app-buttons [btns]="buttons" [editable]="editable">
       <a class="btn btn-sm btn-primary btn-list" href="javascript:;" (click)="showDetails = !showDetails">
         <i class="fa fa-plus"></i> Details</a>
     </app-buttons>
   </div>
-  <p class="card-text mt-2" [collapse]="!showDetails" [innerHTML]="course.details"></p>
+  <p class="card-text mt-2" [collapse]="!showDetails" [innerHTML]="object.details"></p>
 </ng-template>
 
 
@@ -82,7 +82,7 @@
     </div>
 
     <div>
-      <app-buttons [btns]="btns" [editable]="editable">
+      <app-buttons [btns]="buttons" [editable]="editable">
         <a class="btn btn-sm btn-primary btn-list" href="javascript:;" (click)="showDetails = !showDetails">
           <i class="fa fa-plus"></i> Details</a>
       </app-buttons>

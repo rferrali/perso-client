@@ -85,17 +85,23 @@ export class BackendService {
   ////////////////////////////////////
 
   getCourses(): Observable<Course[]> {
-    return this.http.get<Course[]>(this.coursesUrl); 
+    return this.http.get<any[]>(this.coursesUrl).pipe(
+      switchMap(courses => of(courses.map(course => new Course(course))))
+    ); 
   }
 
   getCourse(id: number): Observable<Course> {
     const url = `${this.coursesUrl}/${id}`;
-    return this.http.get<Course>(url);
+    return this.http.get<any>(url).pipe(
+      switchMap(course => of(new Course(course)))
+    );
   }
 
-  updateCourse (course: Course): Observable<any> {
+  updateCourse (course: Course): Observable<Course> {
     const url = `${this.coursesUrl}/${course.id}`;
-    return this.http.put(url, course, httpOptions);
+    return this.http.put(url, course, httpOptions).pipe(
+      switchMap(course => of(new Course(course)))
+    );
   }
 
   updateCourses (courses: Course[]): Observable<any> {
@@ -103,13 +109,17 @@ export class BackendService {
   }
 
   addCourse (course: Course): Observable<Course> {
-    return this.http.post<Course>(this.coursesUrl, course, httpOptions);
+    return this.http.post<any>(this.coursesUrl, course, httpOptions).pipe(
+      switchMap(course => of(new Course(course)))
+    );
   }
 
   deleteCourse (course: Course): Observable<Course> {
     const id = course.id;
     const url = `${this.coursesUrl}/${id}`;
-    return this.http.delete<Course>(url, httpOptions);
+    return this.http.delete<any>(url, httpOptions).pipe(
+      switchMap(course => of(new Course(course)))
+    );
   }
 
   ////////////////////////////////////
@@ -117,17 +127,23 @@ export class BackendService {
   ////////////////////////////////////
 
   getSoftwares(): Observable<Software[]> {
-    return this.http.get<Software[]>(this.softwaresUrl); 
+    return this.http.get<any[]>(this.softwaresUrl).pipe(
+      switchMap(softwares => of(softwares.map(software => new Software(software))))
+    ); 
   }
 
   getSoftware(id: number): Observable<Software> {
     const url = `${this.softwaresUrl}/${id}`;
-    return this.http.get<Software>(url);
+    return this.http.get<any>(url).pipe(
+      switchMap(software => of(new Software(software)))
+    );
   }
 
-  updateSoftware (software: Software): Observable<any> {
+  updateSoftware (software: Software): Observable<Software> {
     const url = `${this.softwaresUrl}/${software.id}`;
-    return this.http.put(url, software, httpOptions);
+    return this.http.put(url, software, httpOptions).pipe(
+      switchMap(software => of(new Software(software)))
+    );
   }
 
   updateSoftwares (softwares: Software[]): Observable<any> {
@@ -135,13 +151,17 @@ export class BackendService {
   }
 
   addSoftware (software: Software): Observable<Software> {
-    return this.http.post<Software>(this.softwaresUrl, software, httpOptions);
+    return this.http.post<any>(this.softwaresUrl, software, httpOptions).pipe(
+      switchMap(software => of(new Software(software)))
+    );
   }
 
   deleteSoftware (software: Software): Observable<Software> {
     const id = software.id;
     const url = `${this.softwaresUrl}/${id}`;
-    return this.http.delete<Software>(url, httpOptions);
+    return this.http.delete<any>(url, httpOptions).pipe(
+      switchMap(software => of(new Software(software)))
+    );
   }
 
   ////////////////////////////////////

@@ -19,7 +19,7 @@ export class DatasetsComponent extends ListablesComponent<Dataset> implements On
 
   ngOnInit() {
     this.store.datasets.subscribe(datasets => {
-      this.objects = datasets; 
+      this.objects[0].objects = datasets; 
     }); 
   }
 

@@ -1,76 +1,39 @@
 import { Component, OnInit } from '@angular/core';
 import { Paper, Keyword } from '../model'; 
 import { StoreService } from '../store.service'; 
+import { ListablesComponent } from '../listables.component'; 
 
 @Component({
   selector: 'app-research',
   templateUrl: './research.component.html',
   styleUrls: ['./research.component.css']
 })
-export class ResearchComponent implements OnInit {
+export class ResearchComponent extends ListablesComponent<Paper> implements OnInit {
 
-  papers: Paper[]; 
-  papers0: Paper[]; 
-  papers1: Paper[]; 
-  papers2: Paper[]; 
-  keywords: Keyword[]; 
-  mode = 'none';
-  edittedId: number;
+  c = Paper; 
 
   constructor(
-    private store: StoreService
-  ) { }
+    public store: StoreService
+  ) { super(store) }
 
   ngOnInit() {
     this.store.papers.subscribe(papers => {
-      this.papers = papers; 
-      this.papers0 = papers.filter(x => x.type == 0); 
-      this.papers1 = papers.filter(x => x.type == 1); 
-      this.papers2 = papers.filter(x => x.type == 2); 
+      if(papers.length > 0) {
+        let type = null as string;
+        let j = -1;
+        this.objects = [];
+        for (let i = 0; i < papers.length; i++) {
+          const paper = papers[i];
+          if(paper.type != type) {
+            type = paper.type; 
+            this.objects.push({objects: [paper], form: this.makeTypeForm(type), editable: false});
+            j++
+          } else {
+            this.objects[j].objects.push(paper);
+          }
+        }
+      }
     }); 
-  }
-
-  modeSelect(e: string) {
-    if(this.mode == 'sort' && e == 'none') {
-      this.onSort(); 
-    }
-    this.mode = e;  
-  }
-
-  onEdit(e: number): void {
-    if(this.mode == 'none') {
-      this.mode = 'edit';
-      this.edittedId = e; 
-    } else {
-      this.mode = 'none';
-      this.edittedId = null; 
-    }
-  }
-
-  onDelete(event: Paper): void {
-    this.store.deletePaper(event); 
-  }
-
-  onSort(): void {
-    this.papers0 = this.papers0.map(paper => {
-      paper.type = 0; 
-      return paper; 
-    })
-    this.papers1 = this.papers1.map(paper => {
-      paper.type = 1; 
-      return paper; 
-    })
-    this.papers2 = this.papers2.map(paper => {
-      paper.type = 2; 
-      return paper; 
-    })
-    const papers = this.papers2.concat(this.papers1).concat(this.papers0); 
-    let len = papers.length;
-    var i; 
-    for (i=0; i<len; i++) {
-      papers[i].order = i; 
-    }
-    this.store.updatePapers(papers);
   }
 
 }

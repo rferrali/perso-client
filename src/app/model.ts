@@ -31,10 +31,12 @@ export class Listable {
     hasButtons: boolean;
     hasPeople: boolean;
     hasKeywords: boolean;
+    hasType: boolean;
     api: string;
     buttons?: Button[];
     people?: Person[];
     keywords?: Keyword[];
+    type?: string;
     constructor(object?: any) {
         if(object) {
             this.id = object.id; 
@@ -50,11 +52,12 @@ export class Paper extends Listable {
     year: number; 
     status: string;
     order: number;
-    type: number; 
+    type = 'No category'; 
     api = 'paper';
     hasKeywords = true; 
     hasPeople = true; 
     hasButtons = true; 
+    hasType = true; 
     buttons = [] as Button[];
     people = [] as Person[];
     keywords = [] as Keyword[];
@@ -88,6 +91,7 @@ export class Software extends Listable {
     hasKeywords = false; 
     hasPeople = false; 
     hasButtons = true;
+    hasType = false; 
     api = 'software';
     keywords = [] as Keyword[];
     buttons = [] as Button[];
@@ -142,6 +146,7 @@ export class Course extends Listable {
     hasKeywords = false; 
     hasPeople = true; 
     hasButtons = true;
+    hasType = false; 
     buttons = [] as Button[];
     people = [] as Person[];
 
@@ -165,6 +170,7 @@ export class Dataset extends Listable {
     hasButtons = false; 
     hasKeywords = false; 
     hasPeople = false;
+    hasType = false; 
     api = 'dataset';
 
     constructor(object?: any) {

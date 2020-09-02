@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ɵCompiler_compileModuleSync__POST_R3__ } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { Person, Paper, File, User, Me, Keyword, Dataset, Listable } from './model'
@@ -165,40 +165,6 @@ export class BackendService {
   }
 
   ////////////////////////////////////
-  //////////// PAPERS ////////////////
-  ////////////////////////////////////
-
-  getPapers(): Observable<Paper[]> {
-    return this.http.get<any[]>(this.papersUrl).pipe(
-      switchMap(papers => of(papers.map(paper => new Paper(paper))))
-    );
-  }
-
-  updatePaper (paper: Paper): Observable<Paper> {
-    return this.http.put<any>(`${this.papersUrl}/${paper.id}`, paper, httpOptions).pipe(
-      switchMap(paper => of(new Paper(paper)))
-    );
-  }
-
-  updatePapers (papers: Paper[]): Observable<null> {
-    return this.http.put<null>(this.papersUrl, papers, httpOptions);
-  }
-
-  addPaper (paper: Paper): Observable<Paper> {
-    return this.http.post<any>(this.papersUrl, paper, httpOptions).pipe(
-      switchMap(paper => of(new Paper(paper)))
-    );
-  }
-
-  deletePaper (paper: Paper): Observable<Paper> {
-    const id = paper.id;
-    const url = `${this.papersUrl}/${id}`;
-    return this.http.delete<any>(url, httpOptions).pipe(
-      switchMap(paper => of(new Paper(paper)))
-    );
-  }
-
-  ////////////////////////////////////
   //////////// FILES  ////////////////
   ////////////////////////////////////
 
@@ -231,34 +197,6 @@ export class BackendService {
     const name = file.name;
     const url = `${this.filesUrl}/${name}`;
     return this.http.delete<File>(url, httpOptions);
-  }
-
-  ////////////////////////////////////
-  //////////// DATASETS ////////////////
-  ////////////////////////////////////
-
-  getDatasets(): Observable<Dataset[]> {
-    return this.http.get<Dataset[]>(this.datasetsUrl); 
-  }
-
-  getDataset(id: number): Observable<Dataset> {
-    const url = `${this.datasetsUrl}/${id}`;
-    return this.http.get<Dataset>(url);
-  }
-
-  updateDataset (dataset: Dataset): Observable<any> {
-    const url = `${this.datasetsUrl}/${dataset.id}`;
-    return this.http.put(url, dataset, httpOptions);
-  }
-
-  addDataset (dataset: Dataset): Observable<Dataset> {
-    return this.http.post<Dataset>(this.datasetsUrl, dataset, httpOptions);
-  }
-
-  deleteDataset (dataset: Dataset): Observable<Dataset> {
-    const id = dataset.id;
-    const url = `${this.datasetsUrl}/${id}`;
-    return this.http.delete<Dataset>(url, httpOptions);
   }
 
 

@@ -22,7 +22,7 @@ export abstract class ListableComponent<T extends Listable> implements OnInit {
   showSummary = false;
   allKeywords: Keyword[];
   get editable(): boolean {
-    return (this.mode == 'edit' && this.object.id == this.edittedId) || (this.mode == 'create' && this.new)
+    return (this.mode == 'edit' && this.object.id == this.edittedId) || (this.mode == 'create' && this.new);
   }
   get buttons() {
     return this.editForm.get('buttons') as FormGroup;

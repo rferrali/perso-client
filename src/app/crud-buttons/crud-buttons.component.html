@@ -1,14 +1,18 @@
 <div class="btn-group">
-  <button (click)="onClick('delete')" class="btn btn-danger" [disabled]="['sort', 'edit', 'create'].includes(mode)">
-    <i class="fa fa-trash"></i>
+  <button (click)="onClick('delete')" class="btn btn-danger" [disabled]="['sort', 'edit', 'create', 'group', 'create-group'].includes(mode)">
+    <i class="fas fa-trash"></i>
     <span *ngIf="mode == 'delete'">&nbsp; Done</span>
   </button>
-  <button (click)="onClick('sort')" class="btn btn-dark" [disabled]="['delete', 'edit', 'create'].includes(mode)">
-    <i class="fa fa-sort"></i>
+  <button (click)="onClick('sort')" class="btn btn-dark" [disabled]="['delete', 'edit', 'create', 'group', 'create-group'].includes(mode)">
+    <i class="fas fa-sort"></i>
     <span *ngIf="mode == 'sort'">&nbsp; Done</span>
   </button>
-  <button (click)="onClick('create')" class="btn btn-dark" [disabled]="['sort', 'edit', 'create', 'delete'].includes(mode)">
-    <i class="fa fa-plus"></i>
+  <button (click)="onClick('create')" class="btn btn-dark" [disabled]="['sort', 'edit', 'create', 'delete', 'group', 'create-group'].includes(mode)">
+    <i class="fas fa-plus"></i>
     <span *ngIf="!['sort', 'delete'].includes(mode)">&nbsp; New {{ object }}</span>
+  </button>
+  <button *ngIf="group" (click)="onClick('create-group')" class="btn btn-dark" [disabled]="['sort', 'edit', 'create', 'delete', 'group', 'create-group'].includes(mode)">
+    <i class="fas fa-layer-group"></i>
+    <span *ngIf="!['sort', 'delete'].includes(mode)">&nbsp; New group</span>
   </button>
 </div>

@@ -17,7 +17,7 @@ export class SoftwaresComponent extends ListablesComponent<Software> implements 
   ) { super(store) }
 
   ngOnInit() {
-    this.store.softwares.subscribe(softwares => {this.objects = softwares}); 
+    this.store.softwares.subscribe(softwares => {this.objects[0].objects = softwares}); 
   }
 
 }

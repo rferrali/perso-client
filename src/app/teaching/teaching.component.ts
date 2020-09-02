@@ -17,7 +17,7 @@ export class TeachingComponent extends ListablesComponent<Course> implements OnI
   ) { super(store) }
 
   ngOnInit() {
-    this.store.courses.subscribe(courses => {this.objects = courses}); 
+    this.store.courses.subscribe(courses => {this.objects[0].objects = courses}); 
   }
 
 }

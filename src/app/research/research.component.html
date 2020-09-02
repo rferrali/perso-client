@@ -8,70 +8,55 @@
         <span>
           <h1>Research</h1>
         </span>
-        <app-crud-buttons object="paper" [mode]="mode" (modeSelect)="modeSelect($event)"></app-crud-buttons>
+        <app-crud-buttons object="paper" [mode]="mode" (modeSelect)="modeSelect($event)" group></app-crud-buttons>
       </app-section-header>
 
-      <div *ngIf="mode == 'create'" class="mt-1">
-        <h3 class="mb-2 mt-3">New paper</h3>
-        <app-paper (edit)="onEdit($event)" [mode]="mode" [edittedId]="edittedId" new></app-paper>
+      <div *ngIf="mode == 'create'" class="mt-1 mb-2">
+        <h3>New paper</h3>
+        <app-paper [mode]="mode" [edittedId]="edittedId" (edit)="onEdit($event)" (delete)="onDelete($event)" new>
+        </app-paper>
       </div>
 
-      <div>
-        <h3 class="mb-2 mt-3">Publications</h3>
-        <div *ngIf="mode != 'sort'; else sortBlock2">
-          <div *ngFor="let paper of papers2" class="mt-1">
-            <app-paper (edit)="onEdit($event)" [object]="paper" [mode]="mode" [edittedId]="edittedId"></app-paper>
+      <div *ngFor="let group of objects; index as i" class="mb-3">
+        <div style="width: max-content;" *ngIf="!(['group', 'create-group'].includes(mode) && group.editable)">
+          <app-section-header>
+            <span>
+              <h3 class="mr-2">{{ group.form.value.name }}</h3>
+            </span>
+            <div>
+              <button class="btn btn-dark btn-sm" type="button" (click)="onEditGroup(i)" *ngIf="mode == 'none'"><i
+                  class="fas fa-edit"></i></button>
+            </div>
+          </app-section-header>
+        </div>
+        <form [formGroup]="group.form" *ngIf="['group', 'create-group'].includes(mode) && group.editable"
+          class="form-inline" (ngSubmit)="onSubmitGroup(i)">
+          <input class="form-control form-control-lg" formControlName="name">
+          <div class="btn-group ml-2">
+            <button class="btn btn-outline-primary btn-lg" type="button" (click)="onCancelGroup(i)"><i
+                class="fas fa-times"></i></button>
+            <button class="btn btn-primary btn-lg" type="submit" [disabled]="group.form.invalid"><i
+                class="fas fa-check"></i></button>
+          </div>
+        </form>
+        <div *ngIf="mode != 'sort'; else sortBlock">
+          <div *ngFor="let object of group.objects" class="mt-1">
+            <app-paper [object]="object" [mode]="mode" [edittedId]="edittedId" (edit)="onEdit($event)"
+              (delete)="onDelete($event)"></app-paper>
           </div>
         </div>
-
-        <ng-template #sortBlock2>
-          <bs-sortable [(ngModel)]="papers2" [itemTemplate]="itemTemplate" itemClass="sortable-item mt-1"
+        <ng-template #sortBlock>
+          <bs-sortable [(ngModel)]="group.objects" [itemTemplate]="itemTemplate" itemClass="sortable-item mt-1"
             itemActiveClass="sortable-item-active" placeholderItem="Drag here" placeholderClass="placeholderStyle"
             wrapperClass="sortable-wrapper list-group">
           </bs-sortable>
-        </ng-template>
-      </div>
-
-      <div>
-        <h3 class="mb-2 mt-3">Working papers</h3>
-        <div *ngIf="mode != 'sort'; else sortBlock1">
-          <div *ngFor="let paper of papers1" class="mt-1">
-            <app-paper (edit)="onEdit($event)" [object]="paper" [mode]="mode" [edittedId]="edittedId"></app-paper>
-          </div>
-        </div>
-
-        <ng-template #sortBlock1>
-          <bs-sortable [(ngModel)]="papers1" [itemTemplate]="itemTemplate" itemClass="sortable-item mt-1"
-            itemActiveClass="sortable-item-active" placeholderItem="Drag here" placeholderClass="placeholderStyle"
-            wrapperClass="sortable-wrapper list-group">
-          </bs-sortable>
-        </ng-template>
-      </div>
-
-      <div>
-        <h3 class="mb-2 mt-3">In progress</h3>
-        <div *ngIf="mode != 'sort'; else sortBlock0">
-          <div *ngFor="let paper of papers0" class="mt-1">
-            <app-paper (edit)="onEdit($event)" [object]="paper" [mode]="mode" [edittedId]="edittedId"></app-paper>
-          </div>
-        </div>
-
-        <ng-template #sortBlock0>
-          <bs-sortable [(ngModel)]="papers0" [itemTemplate]="itemTemplate" itemClass="sortable-item mt-1"
-            itemActiveClass="sortable-item-active" placeholderItem="Drag here" placeholderClass="placeholderStyle"
-            wrapperClass="sortable-wrapper list-group">
-          </bs-sortable>
+          <ng-template #itemTemplate let-item="item" let-index="index">
+            <app-paper [object]="item.value" [edittedId]="edittedId">
+            </app-paper>
+          </ng-template>
         </ng-template>
       </div>
 
     </div>
   </div>
 </div>
-
-<!-- LONE BLOCK -->
-
-<ng-template #itemTemplate let-item="item" let-index="index">
-  <app-paper (edit)="onEdit($event)" [object]="item.value" [mode]="mode"
-    [edittedId]="edittedId">
-  </app-paper>
-</ng-template>

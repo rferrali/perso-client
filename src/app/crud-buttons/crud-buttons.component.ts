@@ -10,6 +10,13 @@ export class CrudButtonsComponent implements OnInit {
   @Input() object: string;
   @Input() mode: string;
   @Output() modeSelect = new EventEmitter<string>()
+  _group: boolean;
+  @Input() get group() {
+    return this._group;
+  }
+  set group(value: any) {
+    this._group = !(value === undefined);
+  }
 
   constructor() { }
 

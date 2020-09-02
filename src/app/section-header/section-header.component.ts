@@ -9,6 +9,7 @@ import { AuthenticationService } from '../authentication.service';
 export class SectionHeaderComponent implements OnInit {
 
   private _disablePreview: boolean; 
+  private _left: boolean;
   @Input() 
   get disablePreview() {
     return this._disablePreview; 

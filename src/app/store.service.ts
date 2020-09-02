@@ -81,8 +81,7 @@ export class StoreService {
         },
         () => console.log("Error retrieving Keywords")
     );
-    this.backend.getDatasets()
-    .subscribe(
+    this.backend.getListables(Dataset).subscribe(
         datasets => {
             this._datasets.next(datasets);
         },
@@ -196,82 +195,6 @@ export class StoreService {
         let newObjects: T[] = this[`_${object.api}s`].getValue();
         newObjects = newObjects.filter(h => h !== object);
         this[`_${object.api}s`].next(newObjects);
-      }
-    )
-  }
-
-  ///////////////////////////////////////
-  ///////////// PAPERS //////////////////
-  ///////////////////////////////////////
-
-  updatePapers (papers: Paper[]): void {
-    this.backend.updatePapers(papers).
-    subscribe(() => {
-      this._papers.next(papers); 
-    })
-  }
-
-  updatePaper (paper: Paper): void {
-    console.log(paper);
-    this.backend.updatePaper(paper).
-      subscribe(() => {
-        let newPapers: Paper[] = this._papers.getValue();
-        let id: number = newPapers.findIndex(h => h.id == paper.id); 
-        newPapers[id] = paper; 
-        this._papers.next(newPapers); 
-      });
-  }
-
-  addPaper (paper: Paper): void {
-    this.backend.addPaper(paper).
-    subscribe(np => {
-      let newPapers: Paper[] = this._papers.getValue();
-      newPapers.push(np); 
-      this._papers.next(newPapers); 
-    })
-  }
-
-  deletePaper (paper: Paper): void {
-    this.backend.deletePaper(paper).
-    subscribe(
-      () => {
-        let newPapers: Paper[] = this._papers.getValue();
-        newPapers = newPapers.filter(h => h !== paper);
-        this._papers.next(newPapers);
-      }
-    )
-  }
-
-  ///////////////////////////////////////
-  ///////////// DATASETS ////////////////
-  ///////////////////////////////////////
-
-  updateDataset (dataset: Dataset): void {
-    this.backend.updateDataset(dataset).
-    subscribe(() => {
-      let newDatasets: Dataset[] = this._datasets.getValue();
-      let id: number = newDatasets.findIndex(h => h.id == dataset.id); 
-      newDatasets[id] = dataset; 
-      this._datasets.next(newDatasets); 
-    })
-  }
-
-  addDataset (dataset: Dataset): void {
-    this.backend.addDataset(dataset).
-    subscribe(np => {
-      let newDatasets: Dataset[] = this._datasets.getValue();
-      newDatasets.push(np); 
-      this._datasets.next(newDatasets); 
-    })
-  }
-
-  deleteDataset (dataset: Dataset): void {
-    this.backend.deleteDataset(dataset).
-    subscribe(
-      () => {
-        let newDatasets: Dataset[] = this._datasets.getValue();
-        newDatasets = newDatasets.filter(h => h !== dataset);
-        this._datasets.next(newDatasets);
       }
     )
   }

@@ -1,7 +1,7 @@
-<div *ngIf="editable" class="d-inline-flex">
+<div *ngIf="editable" class="d-inline-flex flex-wrap">
   <bs-sortable [(ngModel)]="people" [ngModelOptions]="{standalone: true}" [itemTemplate]="personTemplate"
     itemClass="sortable-item mr-1 mb-1" itemActiveClass="sortable-item-active" placeholderItem=""
-    placeholderClass="placeholderStyle" wrapperClass="sortable-wrapper d-inline-flex" (onChange)="sortPeople($event)">
+    placeholderClass="placeholderStyle" wrapperClass="sortable-wrapper d-inline-flex flex-wrap" (onChange)="sortPeople($event)">
   </bs-sortable>
   <span>
     <span class="form-inline">

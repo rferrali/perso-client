@@ -1,6 +1,6 @@
-<div class="d-flex align-items-start">
+<div class="d-flex flex-wrap align-items-start">
   <ng-content></ng-content>
-  <div *ngIf="editable; then editBlock; else displayBlock" class="d-flex align-items-start"></div>
+  <div *ngIf="editable; then editBlock; else displayBlock" class="d-flex flex-wrap align-items-start"></div>
 </div>
 
 
@@ -13,11 +13,11 @@
 
 <ng-template #editBlock>
   <div>
-    <div class="d-flex align-items-start">
+    <div class="d-flex flex-wrap align-items-start">
       <!-- Buttons, sortable -->
       <bs-sortable [(ngModel)]="sortableButtons" [ngModelOptions]="{standalone: true}" [itemTemplate]="buttonTemplate"
         itemClass="sortable-item" itemActiveClass="sortable-item-active" placeholderItem=""
-        placeholderClass="placeholderStyle" wrapperClass="sortable-wrapper d-flex" (onChange)="sortButtons($event)">
+        placeholderClass="placeholderStyle" wrapperClass="sortable-wrapper d-flex flex-wrap" (onChange)="sortButtons($event)">
       </bs-sortable>
       <button class="btn btn-outline-primary btn-sm btn-list" (click)="showAddButton()" type="button"
         *ngIf="!showButton">

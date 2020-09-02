@@ -23,12 +23,11 @@
       </button>
     </div>
   </app-section-header>
-  <div *ngIf="object.status" class="mb-2" [innerHtml]="object.status"></div>
-  <div *ngIf="object.keywords.length > 0" class="clearfix mb-2">
+  <div *ngIf="object.status" [innerHtml]="object.status"></div>
+  <div *ngIf="object.keywords.length > 0">
     <app-keywords-edit [editable]="editable" [keywords]="keywords">
     </app-keywords-edit>
   </div>
-
   <div>
     <app-buttons [btns]="buttons" [editable]="editable">
       <a class="btn btn-sm btn-primary btn-list" href="javascript:;" (click)="showSummary = !showSummary"

@@ -2,7 +2,7 @@
 
 
 <ng-template #displayBlock>
-  <div *ngIf="keywordsArray.length > 0" class="mb-2">
+  <div *ngIf="keywordsArray.length > 0">
     <span *ngFor="let keyword of keywordsArray; index as i">
       <span *ngIf="test(keyword); else noMatch">
           <a routerLink="/research" class="btn btn-sm mr-1 mb-1 btn-primary">

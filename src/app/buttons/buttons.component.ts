@@ -31,7 +31,7 @@ export class ButtonsComponent implements OnChanges {
   ) { }
 
   ngOnChanges() { 
-    this.sortableButtons = this.buttons.value; 
+    this.sortableButtons = this.buttons.value.map(b => new Button(b)); 
    }
 
   

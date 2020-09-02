@@ -10,7 +10,7 @@
       <hr>
       <div *ngIf="!editMode; else editBlock">
           <p [innerHTML]="me.about"></p>
-          <a class="btn btn-primary btn-lg" href="{{ me.cv }}" target="_blank">Download my CV &raquo;</a>
+          <a class="btn btn-primary btn-lg" href="{{ me.cv_url }}" target="_blank">Download my CV &raquo;</a>
       </div>
       <ng-template #editBlock>
         <form [formGroup]="form" (ngSubmit)="onSubmit()">

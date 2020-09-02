@@ -1,3 +1,5 @@
+import { environment } from 'src/environments/environment';
+
 export class Person {
     id: number; 
     first_name: string;
@@ -10,6 +12,17 @@ export class Button {
     icon: string;
     label: string; 
     content: string;
+    get url() {
+        return this.content.substring(0,4) == 'http' ? this.content : `${environment.serverUrl}/${this.content}`;
+    }
+    constructor(object?: any) {
+        if(object) {
+            this.type = object.type;
+            this.icon = object.icon;
+            this.label = object.label;
+            this.content = object.content;
+        }
+    }
 }
 
 export class Listable {
@@ -56,7 +69,7 @@ export class Paper extends Listable {
             this.status = object.status; 
             this.type = object.type; 
             this.people = object.people; 
-            this.buttons = object.buttons; 
+            this.buttons = object.buttons.map(b => new Button(b)); 
             this.keywords = object.keywords.sort(function(a, b){
                 var x = a.keyword.toLowerCase();
                 var y = b.keyword.toLowerCase();
@@ -85,7 +98,7 @@ export class Software extends Listable {
             this.name = object.name; 
             this.slug = object.slug; 
             this.details = object.details; 
-            this.buttons = object.buttons;
+            this.buttons = object.buttons.map(b => new Button(b));
         } 
     }
 }
@@ -139,7 +152,7 @@ export class Course extends Listable {
             this.level = object.level;
             this.details = object.details;
             this.role = object.role;
-            this.buttons = object.buttons;
+            this.buttons = object.buttons.map(b => new Button(b));
             this.people = object.people; 
         }
     }
@@ -161,7 +174,23 @@ export class Me {
     cv: string; 
     address: string; 
     map_url: string;
-    socials: Social[]
+    socials: Social[];
+    get cv_url() {
+        if(!this.cv) return null;
+        return this.cv.substring(0,4) == 'http' ? this.cv : `${environment.serverUrl}/${this.cv}`;
+    }
+    constructor(object?: any) {
+        if(object) {
+            this.first_name = object.first_name;
+            this.last_name = object.last_name;
+            this.position = object.position;
+            this.about = object.about;
+            this.cv = object.cv;
+            this.address = object.address;
+            this.map_url = object.map_url;
+            this.socials = object.socials;
+        }
+    }
 }
 
 export class Social {

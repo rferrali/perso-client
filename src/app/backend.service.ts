@@ -41,15 +41,21 @@ export class BackendService {
   }
 
   getMe(): Observable<Me> {
-    return this.http.get<Me>(this.meUrl); 
+    return this.http.get<any>(this.meUrl).pipe(
+      switchMap(me => of(new Me(me)))
+    ); 
   }
 
-  updateMe (me: Me): Observable<any> {
-    return this.http.put(this.meUrl, me, httpOptions);
+  updateMe (me: Me): Observable<Me> {
+    return this.http.put(this.meUrl, me, httpOptions).pipe(
+      switchMap(me => of(new Me(me)))
+    );
   } 
 
   register(me: any): Observable<Me> {
-    return this.http.post<Me>(this.registerUrl, me, httpOptions);
+    return this.http.post<Me>(this.registerUrl, me, httpOptions).pipe(
+      switchMap(me => of(new Me(me)))
+    );
   }
 
   ////////////////////////////////////

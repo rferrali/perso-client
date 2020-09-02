@@ -1,5 +1,5 @@
 import { Input, EventEmitter, Output, OnInit } from '@angular/core';
-import { Listable, Keyword } from './model';
+import { Listable, Keyword, Button } from './model';
 import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
 import { StoreService } from './store.service';
 
@@ -107,7 +107,7 @@ export abstract class ListableComponent<T extends Listable> implements OnInit {
 
   onSubmit(): void {
     let form = this.editForm.value;
-    if (this.object.hasButtons) form.buttons = form.buttons.buttons;
+    if (this.object.hasButtons) form.buttons = form.buttons.buttons.map(b => new Button(b));
     if (this.object.hasKeywords) {
       const test = form.keywordsGroup.keywords;
       delete form.keywordsGroup;

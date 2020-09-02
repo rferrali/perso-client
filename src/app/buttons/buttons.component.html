@@ -5,8 +5,8 @@
 
 
 <ng-template #displayBlock>
-  <a *ngFor="let button of sortableButtons" class="btn btn-sm btn-primary btn-list" href="{{ button.content }}" target="_blank"
-    [eventTracker]='{"category":"button","action":button.content}'>
+  <a *ngFor="let button of sortableButtons" class="btn btn-sm btn-primary btn-list" href="{{ button.url }}" target="_blank"
+    [eventTracker]='{"category":"button","action":button.url}'>
     <i class="{{ button.icon }}"></i> {{ button.label }}
   </a>
 </ng-template>
@@ -60,10 +60,10 @@
                   <i class="fa fa-file"></i>
                 </label>
               </div>
-              <input *ngSwitchCase="0" type="text" class="form-control form-control-sm" id="newButton-content"
+              <input *ngSwitchCase="0" type="text" class="form-control form-control-sm" 
                 [ngClass]="{'is-invalid': newButton.errors?.requiredType && newButton.touched}" formControlName="url"
                 placeholder="http://youre-awesome.com">
-              <select *ngSwitchCase="1" class="form-control form-control-sm" id="newButton-content"
+              <select *ngSwitchCase="1" class="form-control form-control-sm" 
                 [ngClass]="{'is-invalid': newButton.errors?.requiredType && newButton.touched}" formControlName="file">
                 <option *ngFor="let file of store.files | async" [value]="file.url">
                   {{file.name}}

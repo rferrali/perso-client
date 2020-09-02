@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { Course } from '../model'; 
 import { FormBuilder, Validators } from '@angular/forms'
 import { StoreService } from '../store.service'; 
@@ -9,9 +9,9 @@ import { ListableComponent } from '../listable.component';
   templateUrl: './course.component.html',
   styleUrls: ['./course.component.css']
 })
-export class CourseComponent extends ListableComponent implements OnInit {
+export class CourseComponent extends ListableComponent<Course> {
 
-  @Input() object: Course; 
+  c = Course; 
 
   // initialization
 
@@ -19,11 +19,6 @@ export class CourseComponent extends ListableComponent implements OnInit {
     public store: StoreService, 
     public fb: FormBuilder
   ) { super(store, fb) }
-
-  ngOnInit() { 
-    if (!this.object) this.object = new Course;
-    this.createEditForm(); 
-   }
 
   createEditForm(): void {
     this.editForm = this.fb.group({
@@ -37,19 +32,6 @@ export class CourseComponent extends ListableComponent implements OnInit {
         buttons: this.buttonsGroup(), 
         people: this.peopleArray() 
     })
-  }
-
-  onSubmit(): void {
-    let form = this.editForm.value; 
-    form.buttons = form.btns.buttons; 
-    delete form.btns; 
-    this.object = form as Course; 
-    if(this.object.id) {
-      this.store.updateCourse(this.object);
-    } else {
-      this.store.addCourse(this.object);
-    }
-    this.edit.emit(this.object.id);
   }
 
 }

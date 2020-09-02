@@ -42,7 +42,7 @@ export class KeywordsEditComponent implements OnChanges {
 
   ngOnChanges() {
     this.store.keywords.subscribe(keywords => {
-      this.allKeywords = keywords
+      this.allKeywords = [...keywords]
         .sort(function(a, b){
           var x = a.keyword.toLowerCase();
           var y = b.keyword.toLowerCase();

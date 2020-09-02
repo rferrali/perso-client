@@ -18,6 +18,7 @@ export class Listable {
     hasButtons: boolean;
     hasPeople: boolean;
     hasKeywords: boolean;
+    api: string;
     buttons?: Button[];
     people?: Person[];
     keywords?: Keyword[];
@@ -37,6 +38,7 @@ export class Paper extends Listable {
     status: string;
     order: number;
     type: number; 
+    api = 'paper';
     hasKeywords = true; 
     hasPeople = true; 
     hasButtons = true; 
@@ -73,6 +75,7 @@ export class Software extends Listable {
     hasKeywords = false; 
     hasPeople = false; 
     hasButtons = true;
+    api = 'software';
     keywords = [] as Keyword[];
 
     constructor(object?: any) {
@@ -121,6 +124,7 @@ export class Course extends Listable {
     level: string; 
     details: string; 
     role: string; 
+    api = 'course';
     hasKeywords = false; 
     hasPeople = true; 
     hasButtons = true;

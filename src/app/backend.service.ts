@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { Person, Paper, File, User, Me, Course, Keyword, Software, Dataset } from './model'
+import { Person, Paper, File, User, Me, Course, Keyword, Software, Dataset, Listable } from './model'
 import { HttpEventType } from '@angular/common/http'; 
 import { map, switchMap } from  'rxjs/operators';
 import { environment } from 'src/environments/environment';
@@ -78,6 +78,52 @@ export class BackendService {
     const id = person.id;
     const url = `${this.peopleUrl}/${id}`;
     return this.http.delete<Person>(url, httpOptions);
+  }
+
+  /////////////////////////////////////
+  /////////// GENERIC CRUD ////////////
+  /////////////////////////////////////
+
+  getListables<T extends Listable>(c: new (object?: any) => T): Observable<T[]> {
+    const proto = new c();
+    const url = `${environment.serverUrl}/${proto.api}`
+    return this.http.get<any[]>(url).pipe(
+      switchMap(objects => of(objects.map(object => new c(object))))
+    );
+  }
+
+  getListable<T extends Listable>(c: new (object?: any) => T, id: number): Observable<T> {
+    const proto = new c();
+    const url = `${environment.serverUrl}/${proto.api}/${id}`
+    return this.http.get<any>(url).pipe(
+      switchMap(object => of(new c(object)))
+    );
+  }
+
+  updateListable<T extends Listable>(c: new (object?: any) => T, object: T): Observable<T> {
+    const url = `${environment.serverUrl}/${object.api}/${object.id}`;
+    return this.http.put(url, object, httpOptions).pipe(
+      switchMap(object => of(new c(object)))
+    );
+  }
+
+  updateListables<T extends Listable> (objects: T[]): Observable<any> {
+    const url = `${environment.serverUrl}/${objects[0].api}`;
+    return this.http.put(url, objects, httpOptions);
+  }
+
+  addListable<T extends Listable> (c: new (object?: any) => T, object: T): Observable<T> {
+    const url = `${environment.serverUrl}/${object.api}`;
+    return this.http.post<any>(url, object, httpOptions).pipe(
+      switchMap(object => of(new c(object)))
+    );
+  }
+
+  deleteListable<T extends Listable> (c: new (object?: any) => T, object: T): Observable<T> {
+    const url = `${environment.serverUrl}/${object.api}/${object.id}`;
+    return this.http.delete<any>(url, httpOptions).pipe(
+      switchMap(object => of(new c(object)))
+    );
   }
 
   ////////////////////////////////////

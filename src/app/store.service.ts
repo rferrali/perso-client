@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { HttpEventType } from '@angular/common/http'; 
-import { Person, Paper, File, Message, Keyword, Course, Software, Dataset, Me } from './model'; 
+import { Person, Paper, File, Message, Keyword, Course, Software, Dataset, Me, Listable } from './model'; 
 import { MessageService } from './message.service';
 import { BackendService } from './backend.service'; 
 import { AuthenticationService } from './authentication.service';  
@@ -49,12 +49,23 @@ export class StoreService {
           },
           () => console.log("Error retrieving People")
       );
-    this.backend.getPapers()
-    .subscribe(
+    this.backend.getListables(Paper).subscribe(
         papers => {
             this._papers.next(papers);
         },
         () => console.log("Error retrieving Papers")
+    );
+    this.backend.getListables(Course).subscribe(
+        courses => {
+            this._courses.next(courses);
+        },
+        () => console.log("Error retrieving Courses")
+    );
+    this.backend.getListables(Software).subscribe(
+        softwares => {
+            this._softwares.next(softwares);
+        },
+        () => console.log("Error retrieving Softwares")
     );
     this.backend.getFiles()
     .subscribe(
@@ -63,26 +74,12 @@ export class StoreService {
         },
         () => console.log("Error retrieving Files")
     );
-    this.backend.getCourses()
-    .subscribe(
-        courses => {
-            this._courses.next(courses);
-        },
-        () => console.log("Error retrieving Courses")
-    );
     this.backend.getKeywords()
     .subscribe(
         keywords => {
             this._keywords.next(keywords);
         },
         () => console.log("Error retrieving Keywords")
-    );
-    this.backend.getSoftwares()
-    .subscribe(
-        softwares => {
-            this._softwares.next(softwares);
-        },
-        () => console.log("Error retrieving Softwares")
     );
     this.backend.getDatasets()
     .subscribe(
@@ -160,6 +157,45 @@ export class StoreService {
         }); 
         this._people.next(newPeople);
         this._papers.next(newPapers);
+      }
+    )
+  }
+
+  ///////////////////////////////////////
+  ///////// GENERIC CRUD ////////////////
+  ///////////////////////////////////////
+
+  updateListables<T extends Listable>(objects: T[]): void {
+    this.backend.updateListables(objects).subscribe(() => {
+      this[`_${objects[0].api}s`].next(objects);
+    });
+  }
+
+  updateListable<T extends Listable>(c: new (object?: any) => T, object: T): void {
+    this.backend.updateListable(c, object).subscribe(() => {
+      let newObjects: T[] = this[`_${object.api}s`].getValue();
+      let id: number = newObjects.findIndex(h => h.id == object.id); 
+      newObjects[id] = object; 
+      this[`_${object.api}s`].next(newObjects);
+    });
+  }
+
+  addListable<T extends Listable>(c: new (object?: any) => T, object: T): void {
+    this.backend.addListable(c, object).
+    subscribe(np => {
+      let newObjects: T[] = this[`_${object.api}s`].getValue();
+      newObjects.push(np); 
+      this[`_${object.api}s`].next(newObjects); 
+    })
+  }
+
+  deleteListable<T extends Listable>(c: new (object?: any) => T, object: T): void {
+    this.backend.deleteListable(c, object).
+    subscribe(
+      () => {
+        let newObjects: T[] = this[`_${object.api}s`].getValue();
+        newObjects = newObjects.filter(h => h !== object);
+        this[`_${object.api}s`].next(newObjects);
       }
     )
   }

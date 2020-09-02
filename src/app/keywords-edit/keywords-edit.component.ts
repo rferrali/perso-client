@@ -1,4 +1,4 @@
-import { Component, OnChanges, Input } from '@angular/core';
+import { Component, OnChanges, OnInit, Input } from '@angular/core';
 import { Keyword } from '../model'; 
 import { FormArray, FormGroup } from '@angular/forms';
 import { StoreService } from '../store.service';
@@ -10,7 +10,7 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './keywords-edit.component.html',
   styleUrls: ['./keywords-edit.component.scss']
 })
-export class KeywordsEditComponent implements OnChanges {
+export class KeywordsEditComponent implements OnInit, OnChanges {
 
   @Input() editable: boolean; 
   allKeywords: Keyword[]; 
@@ -38,9 +38,16 @@ export class KeywordsEditComponent implements OnChanges {
       return this.kFilter == keyword.slug; 
     }
   }
-  
 
+  ngOnInit () {
+    this.initialize(); 
+  } 
+  
   ngOnChanges() {
+    this.initialize();
+  }
+
+  initialize() {
     this.store.keywords.subscribe(keywords => {
       this.allKeywords = [...keywords]
         .sort(function(a, b){
@@ -53,6 +60,7 @@ export class KeywordsEditComponent implements OnChanges {
       this.keywordsArray = this.allKeywords
         .filter((value, i) => this.keywordsFormArray.value[i]);
     });
+    this.keywordsArray;
   }
 
 }

@@ -7,18 +7,18 @@
     <div class="col">
 
       <div *ngIf="mode != 'sort'; else sortBlock">
-        <div *ngFor="let software of softwares" class="mt-1">
-          <app-software [object]="software" [mode]="mode" [edittedId]="edittedId"
-            (edit)="onEdit($event)" (delete)="onDeleteEvent($event)"></app-software>
+        <div *ngFor="let object of objects" class="mt-1">
+          <app-software [object]="object" [mode]="mode" [edittedId]="edittedId"
+            (edit)="onEdit($event)" (delete)="onDelete($event)"></app-software>
         </div>
         <div *ngIf="mode == 'create'" class="mt-1">
           <app-software [mode]="mode" [edittedId]="edittedId"
-          (edit)="onEdit($event)" (delete)="onDeleteEvent($event)" new></app-software>
+          (edit)="onEdit($event)" (delete)="onDelete($event)" new></app-software>
         </div>
       </div>
 
       <ng-template #sortBlock>
-        <bs-sortable [(ngModel)]="softwares" [itemTemplate]="itemTemplate" itemClass="sortable-item mt-1"
+        <bs-sortable [(ngModel)]="objects" [itemTemplate]="itemTemplate" itemClass="sortable-item mt-1"
           itemActiveClass="sortable-item-active" placeholderItem="" placeholderClass="placeholderStyle"
           wrapperClass="sortable-wrapper list-group">
         </bs-sortable>
@@ -27,7 +27,6 @@
           </app-software>
         </ng-template>
       </ng-template>
-
 
     </div>
   </div>

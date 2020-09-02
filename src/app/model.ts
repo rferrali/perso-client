@@ -90,6 +90,7 @@ export class Software extends Listable {
     hasButtons = true;
     api = 'software';
     keywords = [] as Keyword[];
+    buttons = [] as Button[];
 
     constructor(object?: any) {
         super(object);
@@ -158,6 +159,24 @@ export class Course extends Listable {
     }
 }
 
+export class Dataset extends Listable {
+    id: number; 
+    description: string;
+    hasButtons = false; 
+    hasKeywords = false; 
+    hasPeople = false;
+    api = 'dataset';
+
+    constructor(object?: any) {
+        super(object); 
+        if(object) {
+            this.description = object.description;
+        }
+    }
+    
+}
+
+
 export class User { 
     id: number; 
     first_name: string; 
@@ -199,7 +218,3 @@ export class Social {
     url: string; 
 }
 
-export class Dataset {
-    id: number; 
-    description: string;
-}

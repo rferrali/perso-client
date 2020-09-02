@@ -1,50 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { Software } from '../model'; 
 import { StoreService } from '../store.service'; 
+import { ListablesComponent } from '../listables.component'; 
 
 @Component({
   selector: 'app-softwares',
   templateUrl: './softwares.component.html',
   styleUrls: ['./softwares.component.css']
 })
-export class SoftwaresComponent implements OnInit {
+export class SoftwaresComponent extends ListablesComponent<Software> implements OnInit {
 
-  softwares: Software[]; 
-  edittedId: number;
-  mode = 'none';
+  c = Software;
 
   constructor(
-    private store: StoreService
-  ) { }
+    public store: StoreService
+  ) { super(store) }
 
   ngOnInit() {
-    this.store.softwares.subscribe(softwares => {this.softwares = softwares}); 
-  }
-
-  modeSelect(e: string) {
-    if(this.mode == 'sort' && e == 'none') {
-      let len = this.softwares.length;
-      var i; 
-      for (i=0; i<len; i++) {
-        this.softwares[i].order = i; 
-      }
-      this.store.updateSoftwares(this.softwares);
-    }
-    this.mode = e;  
-  }
-
-  onEdit(e: number): void {
-    if(this.mode == 'none') {
-      this.mode = 'edit';
-      this.edittedId = e; 
-    } else {
-      this.mode = 'none';
-      this.edittedId = null; 
-    }
-  }
-
-  onDelete(event: Software): void {
-    this.store.deleteSoftware(event); 
+    this.store.softwares.subscribe(softwares => {this.objects = softwares}); 
   }
 
 }

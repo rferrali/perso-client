@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { Person, Paper, File, User, Me, Course, Keyword, Software, Dataset, Listable } from './model'
+import { Person, Paper, File, User, Me, Keyword, Dataset, Listable } from './model'
 import { HttpEventType } from '@angular/common/http'; 
 import { map, switchMap } from  'rxjs/operators';
 import { environment } from 'src/environments/environment';
@@ -129,90 +129,6 @@ export class BackendService {
     const url = `${environment.serverUrl}/${object.api}/${object.id}`;
     return this.http.delete<any>(url, httpOptions).pipe(
       switchMap(object => of(new c(object)))
-    );
-  }
-
-  ////////////////////////////////////
-  //////////// COURSES ////////////////
-  ////////////////////////////////////
-
-  getCourses(): Observable<Course[]> {
-    return this.http.get<any[]>(this.coursesUrl).pipe(
-      switchMap(courses => of(courses.map(course => new Course(course))))
-    ); 
-  }
-
-  getCourse(id: number): Observable<Course> {
-    const url = `${this.coursesUrl}/${id}`;
-    return this.http.get<any>(url).pipe(
-      switchMap(course => of(new Course(course)))
-    );
-  }
-
-  updateCourse (course: Course): Observable<Course> {
-    const url = `${this.coursesUrl}/${course.id}`;
-    return this.http.put(url, course, httpOptions).pipe(
-      switchMap(course => of(new Course(course)))
-    );
-  }
-
-  updateCourses (courses: Course[]): Observable<any> {
-    return this.http.put(this.coursesUrl, courses, httpOptions);
-  }
-
-  addCourse (course: Course): Observable<Course> {
-    return this.http.post<any>(this.coursesUrl, course, httpOptions).pipe(
-      switchMap(course => of(new Course(course)))
-    );
-  }
-
-  deleteCourse (course: Course): Observable<Course> {
-    const id = course.id;
-    const url = `${this.coursesUrl}/${id}`;
-    return this.http.delete<any>(url, httpOptions).pipe(
-      switchMap(course => of(new Course(course)))
-    );
-  }
-
-  ////////////////////////////////////
-  //////////// SOFTWARES //////////////
-  ////////////////////////////////////
-
-  getSoftwares(): Observable<Software[]> {
-    return this.http.get<any[]>(this.softwaresUrl).pipe(
-      switchMap(softwares => of(softwares.map(software => new Software(software))))
-    ); 
-  }
-
-  getSoftware(id: number): Observable<Software> {
-    const url = `${this.softwaresUrl}/${id}`;
-    return this.http.get<any>(url).pipe(
-      switchMap(software => of(new Software(software)))
-    );
-  }
-
-  updateSoftware (software: Software): Observable<Software> {
-    const url = `${this.softwaresUrl}/${software.id}`;
-    return this.http.put(url, software, httpOptions).pipe(
-      switchMap(software => of(new Software(software)))
-    );
-  }
-
-  updateSoftwares (softwares: Software[]): Observable<any> {
-    return this.http.put(this.softwaresUrl, softwares, httpOptions);
-  }
-
-  addSoftware (software: Software): Observable<Software> {
-    return this.http.post<any>(this.softwaresUrl, software, httpOptions).pipe(
-      switchMap(software => of(new Software(software)))
-    );
-  }
-
-  deleteSoftware (software: Software): Observable<Software> {
-    const id = software.id;
-    const url = `${this.softwaresUrl}/${id}`;
-    return this.http.delete<any>(url, httpOptions).pipe(
-      switchMap(software => of(new Software(software)))
     );
   }
 

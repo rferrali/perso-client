@@ -9,18 +9,18 @@
     <div class="col">
 
       <div *ngIf="mode != 'sort'; else sortBlock">
-        <div *ngFor="let course of courses" class="mt-1">
-          <app-course [object]="course" [mode]="mode" [edittedId]="edittedId"
-            (edit)="onEdit($event)" (delete)="onDeleteEvent($event)"></app-course>
+        <div *ngFor="let object of objects" class="mt-1">
+          <app-course [object]="object" [mode]="mode" [edittedId]="edittedId"
+            (edit)="onEdit($event)" (delete)="onDelete($event)"></app-course>
         </div>
         <div *ngIf="mode == 'create'" class="mt-1">
           <app-course [mode]="mode" [edittedId]="edittedId"
-          (edit)="onEdit($event)" (delete)="onDeleteEvent($event)" new></app-course>
+          (edit)="onEdit($event)" (delete)="onDelete($event)" new></app-course>
         </div>
       </div>
 
       <ng-template #sortBlock>
-        <bs-sortable [(ngModel)]="courses" [itemTemplate]="itemTemplate" itemClass="sortable-item mt-1"
+        <bs-sortable [(ngModel)]="objects" [itemTemplate]="itemTemplate" itemClass="sortable-item mt-1"
           itemActiveClass="sortable-item-active" placeholderItem="" placeholderClass="placeholderStyle"
           wrapperClass="sortable-wrapper list-group">
         </bs-sortable>

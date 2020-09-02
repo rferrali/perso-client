@@ -1,23 +1,25 @@
 <div class="card">
-    <div class="card-body">
-      <div *ngIf="!editMode; then displayBlock; else editBlock">
-  
-      </div>
+  <div class="card-body">
+    <div *ngIf="(mode == 'edit' && object.id == edittedId) || (mode == 'create' && new); then editBlock; else displayBlock">
+
     </div>
   </div>
-  
-  <ng-template #displayBlock>
-    <div *ngIf="! auth.preview">
-        <button *ngIf="!disableEdit" class="btn btn-dark float-right pull-right" type="button" (click)="enableEdit()">
-            <i class="fa fa-edit"></i>
-          </button>
-          <button *ngIf="deleteMode" class="btn btn-danger btn-outline float-right pull-right" type="button"
-            (click)="onDelete(dataset)">
-            <i class="fa fa-trash"></i>
-          </button>
+</div>
+
+<ng-template #displayBlock>
+  <app-section-header>
+    <div>
+      <button *ngIf="mode == 'none'" class="btn btn-dark" type="button" (click)="enableEdit()">
+        <i class="fa fa-edit"></i>
+      </button>
+      <button *ngIf="mode == 'delete'" class="btn btn-danger btn-outline" type="button"
+        (click)="onDelete()">
+        <i class="fa fa-trash"></i>
+      </button>
     </div>
-    <div [innerHtml]="dataset.description"></div>
-  </ng-template>
+  </app-section-header>
+  <div [innerHtml]="object.description"></div>
+</ng-template>
   
   
   <ng-template #editBlock>

@@ -1,48 +1,30 @@
-<div class="row mb-3">
-    <div class="col">
-        <h3 class="text-center">Interests</h3>
-    </div>
-  </div>
-<div *ngIf="!auth.preview" class="row mb-5">
+<div class="row mb-5">
   <div class="col">
-    <div class="float-right pull-right">
-      <div class="btn-group">
-        <button class="btn btn-danger" (click)="onDelete()" [disabled]="sortMode || editMode || createMode">
-          <i class="fa fa-trash"></i>
-          <span *ngIf="deleteMode">&nbsp; Done</span>
-        </button>
-        <button class="btn btn-dark" (click)="onSort()" [disabled]="deleteMode || editMode || createMode">
-          <i class="fa fa-sort"></i>
-          <span *ngIf="sortMode">&nbsp; Done</span>
-        </button>
-        <button class="btn btn-dark" (click)="onCreate()" [disabled]="sortMode || deleteMode || createMode || editMode">
-          <i class="fa fa-plus"></i>
-          <span *ngIf="!(sortMode || deleteMode)">&nbsp; New keyword</span>
-        </button>
-
-      </div>
-    </div>
+    <h3 class="text-center">Interests</h3>
+    <app-section-header>
+      <app-crud-buttons object="interest" [mode]="mode" (modeSelect)="modeSelect($event)"></app-crud-buttons>
+    </app-section-header>
   </div>
 </div>
 
-<div *ngIf="!sortMode; else sortBlock" class="row">
-  <div *ngFor="let keyword of keywords" class="col-lg-3 col-md-6 text-center">
-    <app-keyword [keyword]="keyword" [disableEdit]="disableEdit" [editMode]="false" [deleteMode]="deleteMode"
-      (isEditMode)="onEdit($event)" (deleteEvent)="onDeleteEvent($event)"></app-keyword>
+<div *ngIf="mode != 'sort'; else sortBlock" class="row">
+  <div *ngFor="let object of objects[0].objects" class="col-lg-3 col-md-6 text-center">
+    <app-keyword [object]="object" [mode]="mode" [edittedId]="edittedId"
+            (edit)="onEdit($event)" (delete)="onDelete($event)"></app-keyword>
   </div>
-  <div *ngIf="createMode" class="col-lg-3 col-md-6 text-center">
-    <app-keyword [keyword]="newKeyword" [disableEdit]="disableEdit" [editMode]="true" [deleteMode]="deleteMode"
-      (isEditMode)="onEdit($event)" (deleteEvent)="onDeleteEvent($event)"></app-keyword>
+  <div *ngIf="mode == 'create'" class="col-lg-3 col-md-6 text-center">
+    <app-keyword [mode]="mode" [edittedId]="edittedId"
+          (edit)="onEdit($event)" (delete)="onDelete($event)" new></app-keyword>
   </div>
 </div>
 
 <ng-template #sortBlock>
-  <bs-sortable [(ngModel)]="keywords" [itemTemplate]="itemTemplate" itemClass="sortable-item col-lg-3 col-md-6 text-center"
-    itemActiveClass="sortable-item-active" placeholderItem="" placeholderClass="placeholderStyle"
-    wrapperClass="sortable-wrapper row">
+  <bs-sortable [(ngModel)]="objects[0].objects" [itemTemplate]="itemTemplate"
+    itemClass="sortable-item col-lg-3 col-md-6 text-center" itemActiveClass="sortable-item-active" placeholderItem=""
+    placeholderClass="placeholderStyle" wrapperClass="sortable-wrapper row">
   </bs-sortable>
   <ng-template #itemTemplate let-item="item" let-index="index">
-    <app-keyword [keyword]="item.value" [disableEdit]="true" [editMode]="false" [deleteMode]="false">
+    <app-keyword [object]="item.value" [edittedId]="edittedId">
     </app-keyword>
   </ng-template>
 </ng-template>

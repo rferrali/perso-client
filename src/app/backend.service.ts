@@ -133,38 +133,6 @@ export class BackendService {
   }
 
   ////////////////////////////////////
-  //////////// KEYWORDS //////////////
-  ////////////////////////////////////
-
-  getKeywords(): Observable<Keyword[]> {
-    return this.http.get<Keyword[]>(this.keywordsUrl); 
-  }
-
-  getKeyword(id: number): Observable<Keyword> {
-    const url = `${this.keywordsUrl}/${id}`;
-    return this.http.get<Keyword>(url);
-  }
-
-  updateKeyword (keyword: Keyword): Observable<any> {
-    const url = `${this.keywordsUrl}/${keyword.id}`;
-    return this.http.put(url, keyword, httpOptions);
-  }
-
-  updateKeywords (keywords: Keyword[]): Observable<any> {
-    return this.http.put(this.keywordsUrl, keywords, httpOptions);
-  }
-
-  addKeyword (keyword: Keyword): Observable<Keyword> {
-    return this.http.post<Keyword>(this.keywordsUrl, keyword, httpOptions);
-  }
-
-  deleteKeyword (keyword: Keyword): Observable<Keyword> {
-    const id = keyword.id;
-    const url = `${this.keywordsUrl}/${id}`;
-    return this.http.delete<Keyword>(url, httpOptions);
-  }
-
-  ////////////////////////////////////
   //////////// FILES  ////////////////
   ////////////////////////////////////
 

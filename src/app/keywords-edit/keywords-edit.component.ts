@@ -60,7 +60,6 @@ export class KeywordsEditComponent implements OnInit, OnChanges {
       this.keywordsArray = this.allKeywords
         .filter((value, i) => this.keywordsFormArray.value[i]);
     });
-    this.keywordsArray;
   }
 
 }

@@ -1,4 +1,4 @@
-import { Input, EventEmitter, Output, OnInit } from '@angular/core';
+import { Input, EventEmitter, Output, OnInit, OnChanges } from '@angular/core';
 import { Listable, Keyword, Button } from './model';
 import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
 import { StoreService } from './store.service';

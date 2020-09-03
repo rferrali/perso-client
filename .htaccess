@@ -1,0 +1,65 @@
+# INFORMATION
+# For new versions of this Gist go to:
+# https://gist.github.com/julianpoemp/bcf277cb56d2420cc53ec630a04a3566
+# Version 1.3.0
+#
+# Contributors:
+# - RaschidJFR [https://gist.github.com/RaschidJFR/f6d21a03b0692f5c7a6a23954003f00b]
+
+# Notice:
+# If you need redirection to https, uncomment the redirection part
+# If you have issues with browser caching you can uncomment the BROWSER CACHING part
+
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+
+ 	# -- Redirection to https (optional):
+	# Please notice: You have to set your base-href attribute correctly:
+	# a) If your app is on the root of the domain, you can just use "/"
+	# b) If not, you need to set "https://" instead of "http://" in your base-href attribute
+	# If you need this, uncomment the next two commands
+	
+	RewriteCond %{HTTPS} !on
+RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/[0-9a-zA-Z_-]+$
+RewriteCond %{REQUEST_URI} !^/\.well-known/cpanel-dcv/[0-9a-zA-Z_-]+$
+RewriteCond %{REQUEST_URI} !^/\.well-known/pki-validation/(?:\ Ballot169)?
+RewriteCond %{REQUEST_URI} !^/\.well-known/pki-validation/[A-F0-9]{32}\.txt(?:\ Comodo\ DCV)?$
+  	RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
+
+	RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} -f [OR]
+	RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} -d
+
+RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/[0-9a-zA-Z_-]+$
+RewriteCond %{REQUEST_URI} !^/\.well-known/cpanel-dcv/[0-9a-zA-Z_-]+$
+RewriteCond %{REQUEST_URI} !^/\.well-known/pki-validation/(?:\ Ballot169)?
+RewriteCond %{REQUEST_URI} !^/\.well-known/pki-validation/[A-F0-9]{32}\.txt(?:\ Comodo\ DCV)?$
+	RewriteRule ^.*$ - [NC,L]
+RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/[0-9a-zA-Z_-]+$
+RewriteCond %{REQUEST_URI} !^/\.well-known/cpanel-dcv/[0-9a-zA-Z_-]+$
+RewriteCond %{REQUEST_URI} !^/\.well-known/pki-validation/(?:\ Ballot169)?
+RewriteCond %{REQUEST_URI} !^/\.well-known/pki-validation/[A-F0-9]{32}\.txt(?:\ Comodo\ DCV)?$
+	RewriteRule ^(.*) index.html [NC,L]
+</IfModule>
+
+#------------ BROWSER CACHING
+# disable browser caching in production.
+#<FilesMatch "\.(html|htm|js|json|css)$">
+#	<IfModule mod_headers.c>
+#		FileETag None
+#		Header unset ETag
+#		Header unset Pragma
+#		Header unset Cache-Control
+#		Header unset Last-Modified
+#		Header set Pragma "no-cache"
+#		Header set Cache-Control "max-age=0, no-cache, no-store, must-revalidate"
+#		Header set Expires "Mon, 10 Apr 1972 00:00:00 GMT"
+#	</IfModule>
+#</FilesMatch>
+#------------
+
+# php -- BEGIN cPanel-generated handler, do not edit
+# Set the “ea-php73” package as the default “PHP” programming language.
+<IfModule mime_module>
+  AddHandler application/x-httpd-ea-php73 .php .php7 .phtml
+</IfModule>
+# php -- END cPanel-generated handler, do not edit

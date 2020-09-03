@@ -1,24 +1,37 @@
-<div *ngIf="!editMode; else editView">
-    <a [routerLink]="['/research', keyword.slug]">
-      <div class="icon">
-        <i class="fa-4x {{ form.get('icon').value }}"></i>
-      </div>
-      <h5 class="mt-3">{{ keyword.keyword }}</h5>
-    </a>
-  
-  <p class="text-muted">{{ keyword.description }}</p>
+<div *ngIf="(mode == 'edit' && object.id == edittedId) || (mode == 'create' && new); then editBlock; else displayBlock">
 </div>
 
+<ng-template #displayBlock>
+  <a [routerLink]="['/research', object.slug]">
+    <div class="icon">
+      <i class="fa-4x {{ editForm.get('icon').value }}"></i>
+    </div>
+    <h5 class="mt-3">{{ object.keyword }}</h5>
+  </a>
 
-<ng-template #editView>
-    <a href="javascript:;">
-      <div class="icon"><i class="fa-4x {{form.get('icon').value}}"></i></div>
-    </a>
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <p class="text-muted">{{ object.description }}</p>
+  <app-section-header>
+    <div>
+      <button *ngIf="mode == 'none'" class="btn btn-dark" type="button" (click)="enableEdit()">
+        <i class="fa fa-edit"></i>
+      </button>
+      <button *ngIf="mode == 'delete'" class="btn btn-danger btn-outline" type="button" (click)="onDelete()">
+        <i class="fa fa-trash"></i>
+      </button>
+    </div>
+  </app-section-header>
+</ng-template>
+
+
+<ng-template #editBlock>
+  <a href="javascript:;">
+    <div class="icon"><i class="fa-4x {{editForm.get('icon').value}}"></i></div>
+  </a>
+  <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
     <div class="form-group mt-3">
       <input class="form-control form-control-lg" type="text" name="keyword" formControlName="keyword"
         placeholder="Keyword">
-      <div *ngIf="form.get('keyword').invalid && form.get('keyword').touched" class="bad-feedback">
+      <div *ngIf="editForm.get('keyword').invalid && editForm.get('keyword').touched" class="bad-feedback">
         What's the overarching theme?
       </div>
     </div>
@@ -27,26 +40,24 @@
     <div class="form-group">
       <input class="form-control" type="text" name="description" formControlName="description"
         placeholder="Description">
-      <div *ngIf="form.get('description').invalid && form.get('description').touched" class="bad-feedback">
+      <div *ngIf="editForm.get('description').invalid && editForm.get('description').touched" class="bad-feedback">
         Add a few details.
       </div>
     </div>
 
     <div class="form-group">
-        <input class="form-control" type="text" name="slug" formControlName="slug"
-          placeholder="Slug">
-        <div *ngIf="form.get('slug').invalid && form.get('slug').touched" class="bad-feedback">
-          Give our little guy a url-friendly name. 
-        </div>
+      <input class="form-control" type="text" name="slug" formControlName="slug" placeholder="Slug">
+      <div *ngIf="editForm.get('slug').invalid && editForm.get('slug').touched" class="bad-feedback">
+        Give our little guy a url-friendly name.
       </div>
+    </div>
 
     <div class="form-group">
       <div class="input-group">
         <div class="input-group-prepend">
           <span class="input-group-text"><i class="fa fa-image"></i></span>
         </div>
-        <input class="form-control"  type="text" name="icon" formControlName="icon"
-        placeholder="fa fa-...">
+        <input class="form-control" type="text" name="icon" formControlName="icon" placeholder="fa fa-...">
       </div>
     </div>
     <div class="form-group">
@@ -54,20 +65,10 @@
         <button type="button" class="btn btn-outline-primary" (click)="onCancel()">
           <i class="fa fa-times"></i> Cancel
         </button>
-        <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
+        <button type="submit" class="btn btn-primary" [disabled]="editForm.invalid">
           <i class="fa fa-save"></i> Save
         </button>
       </div>
     </div>
   </form>
 </ng-template>
-
-
-<div *ngIf="! auth.preview">
-  <button *ngIf="!deleteMode" class="btn btn-dark" type="button" (click)="enableEdit()" [disabled]="disableEdit">
-    <i class="fa fa-edit"></i> Edit
-  </button>
-  <button *ngIf="deleteMode" class="btn btn-danger btn-outline" type="button" (click)="onDelete(keyword)">
-    <i class="fa fa-trash"></i>
-  </button>
-</div>

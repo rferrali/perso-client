@@ -73,13 +73,15 @@ export class Paper extends Listable {
             this.type = object.type; 
             this.people = object.people; 
             this.buttons = object.buttons.map(b => new Button(b)); 
-            this.keywords = object.keywords.sort(function(a, b){
-                var x = a.keyword.toLowerCase();
-                var y = b.keyword.toLowerCase();
-                if (x < y) {return -1;}
-                if (x > y) {return 1;}
-                return 0;
-              });
+            this.keywords = object.keywords
+                .map(k => new Keyword(k))
+                .sort(function(a, b){
+                    var x = a.keyword.toLowerCase();
+                    var y = b.keyword.toLowerCase();
+                    if (x < y) {return -1;}
+                    if (x > y) {return 1;}
+                    return 0;
+                });
         }
     }
 }
@@ -127,13 +129,27 @@ export class FileMessage {
     name: string; 
 }
 
-export class Keyword {
-    id: number; 
+export class Keyword extends Listable {
     keyword: string; 
     description: string; 
     icon: string; 
     order: number; 
     slug: string;
+    api = 'keyword';
+    hasButtons = false;
+    hasKeywords = false;
+    hasPeople = false;
+    hasType = false;
+    constructor(object?: any) {
+        super(object); 
+        if(object) {
+            this.keyword = object.keyword;
+            this.description = object.description;
+            this.icon = object.icon;
+            this.order = object.order;
+            this.slug = object.slug;
+        }
+    }
 }
 
 export class Course extends Listable {
@@ -165,7 +181,6 @@ export class Course extends Listable {
 }
 
 export class Dataset extends Listable {
-    id: number; 
     description: string;
     hasButtons = false; 
     hasKeywords = false; 

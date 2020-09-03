@@ -6,7 +6,7 @@ Feel free to fork the project and improve upon it!
 
 ## Installation
 
-Make sure you have [Node.js](https://nodejs.org/). Then
+Make sure you have [Node.js](https://nodejs.org/). Then type the following in the console:
 
     git clone https://github.com/rferrali/perso-client.git
     cd perso-client

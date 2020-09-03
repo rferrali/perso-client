@@ -7,24 +7,26 @@
 </div>
 
 <ng-template #displayBlock>
-  <app-section-header>
-    <span>
-      <h5 class="card-title">{{ object.name }}</h5>
-    </span>
+  <div class="mb-1">
+    <app-section-header>
+      <span>
+        <h5 class="mb-0">{{ object.name }}</h5>
+      </span>
+      <div>
+        <button *ngIf="mode == 'none'" class="btn btn-dark" type="button" (click)="enableEdit()">
+          <i class="fa fa-edit"></i>
+        </button>
+        <button *ngIf="mode == 'delete'" class="btn btn-danger btn-outline" type="button"
+          (click)="onDelete()">
+          <i class="fa fa-trash"></i>
+        </button>
+      </div>
+    </app-section-header>
     <div>
-      <button *ngIf="mode == 'none'" class="btn btn-dark" type="button" (click)="enableEdit()">
-        <i class="fa fa-edit"></i>
-      </button>
-      <button *ngIf="mode == 'delete'" class="btn btn-danger btn-outline" type="button"
-        (click)="onDelete()">
-        <i class="fa fa-trash"></i>
-      </button>
+      <span>{{ object.term }}. {{ object.level }}. {{ object.role }} </span>
+      <span *ngIf="object.people.length > 0">for </span>
+      <app-people-edit [peopleForm]="people" [editable]="editable"></app-people-edit>
     </div>
-  </app-section-header>
-  <div>
-    <span>{{ object.term }}. {{ object.level }}. {{ object.role }} </span>
-    <span *ngIf="object.people.length > 0">for </span>
-    <app-people-edit [peopleForm]="people" [editable]="editable"></app-people-edit>
   </div>
   <div>
     <app-buttons [btns]="buttons" [editable]="editable">

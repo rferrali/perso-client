@@ -7,23 +7,25 @@
 </div>
 
 <ng-template #displayBlock>
-  <app-section-header>
-    <span>
-      <span><strong style="font-weight: 500;">{{ object.title }}</strong> </span>
-      <span *ngIf="object.people.length > 0">, with </span>
-      <app-people-edit [peopleForm]="people" [editable]="editable"></app-people-edit>
-    </span>
-    <div>
-      <button *ngIf="mode == 'none'" class="btn btn-dark" type="button" (click)="enableEdit()">
-        <i class="fa fa-edit"></i>
-      </button>
-      <button *ngIf="mode == 'delete'" class="btn btn-danger btn-outline" type="button"
-        (click)="onDelete()">
-        <i class="fa fa-trash"></i>
-      </button>
-    </div>
-  </app-section-header>
-  <div *ngIf="object.status" [innerHtml]="object.status"></div>
+  <div class="mb-2">
+    <app-section-header>
+      <span>
+        <span><strong style="font-weight: 600;">{{ object.title }}</strong> </span>
+        <span *ngIf="object.people.length > 0">, with </span>
+        <app-people-edit [peopleForm]="people" [editable]="editable"></app-people-edit>
+      </span>
+      <div>
+        <button *ngIf="mode == 'none'" class="btn btn-dark" type="button" (click)="enableEdit()">
+          <i class="fa fa-edit"></i>
+        </button>
+        <button *ngIf="mode == 'delete'" class="btn btn-danger btn-outline" type="button"
+          (click)="onDelete()">
+          <i class="fa fa-trash"></i>
+        </button>
+      </div>
+    </app-section-header>
+    <div *ngIf="object.status" [innerHtml]="object.status"></div>
+  </div>
   <div *ngIf="object.keywords.length > 0">
     <app-keywords-edit [editable]="editable" [keywords]="keywords">
     </app-keywords-edit>

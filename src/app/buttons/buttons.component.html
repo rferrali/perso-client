@@ -5,8 +5,8 @@
 
 
 <ng-template #displayBlock>
-  <a *ngFor="let button of sortableButtons" class="btn btn-sm btn-primary btn-list" href="{{ button.url }}" target="_blank"
-    [eventTracker]='{"category":"button","action":button.url}'>
+  <a *ngFor="let button of sortableButtons" class="btn btn-sm btn-primary btn-list" href="{{ button.url }}"
+    target="_blank" [eventTracker]='{"category":"button","action":button.url}'>
     <i class="{{ button.icon }}"></i> {{ button.label }}
   </a>
 </ng-template>
@@ -17,7 +17,8 @@
       <!-- Buttons, sortable -->
       <bs-sortable [(ngModel)]="sortableButtons" [ngModelOptions]="{standalone: true}" [itemTemplate]="buttonTemplate"
         itemClass="sortable-item" itemActiveClass="sortable-item-active" placeholderItem=""
-        placeholderClass="placeholderStyle" wrapperClass="sortable-wrapper d-flex flex-wrap" (onChange)="sortButtons($event)">
+        placeholderClass="placeholderStyle" wrapperClass="sortable-wrapper d-flex flex-wrap"
+        (onChange)="sortButtons($event)">
       </bs-sortable>
       <button class="btn btn-outline-primary btn-sm btn-list" (click)="showAddButton()" type="button"
         *ngIf="!showButton">
@@ -36,50 +37,48 @@
 </ng-template>
 
 <!-- Add button -->
-<div class="mt-2">
-  <div *ngIf="showButton" style="width: 100%;">
-    <div [formGroup]="btns">
-      <div formGroupName="newButton">
-        <div class="form-inline">
-          <div class="form-group mr-2">
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <button class="btn btn-outline-primary btn-sm" type="button" [icon]="newButton.get('icon').value"
-                  (select)="onIconPick($event)" app-icon-picker></button>
-              </div>
-              <input type="text" class="form-control form-control-sm" formControlName="label" placeholder="Label">
+<div *ngIf="showButton" style="width: 100%;" class="mt-2">
+  <div [formGroup]="btns">
+    <div formGroupName="newButton">
+      <div class="form-inline">
+        <div class="form-group mr-2">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <button class="btn btn-outline-primary btn-sm" type="button" [icon]="newButton.get('icon').value"
+                (select)="onIconPick($event)" app-icon-picker></button>
             </div>
+            <input type="text" class="form-control form-control-sm" formControlName="label" placeholder="Label">
           </div>
-          <div class="form-group mr-2">
-            <div class="input-group" [ngSwitch]="type">
-              <div class="input-group-prepend" btnRadioGroup formControlName="type">
-                <label class="btn btn-outline-primary btn-sm" btnRadio="0" tabindex="0" role="button">
-                  <i class="fa fa-link"></i>
-                </label>
-                <label class="btn btn-outline-primary btn-sm" btnRadio="1" tabindex="0" role="button">
-                  <i class="fa fa-file"></i>
-                </label>
-              </div>
-              <input *ngSwitchCase="0" type="text" class="form-control form-control-sm" 
-                [ngClass]="{'is-invalid': newButton.errors?.requiredType && newButton.touched}" formControlName="url"
-                placeholder="http://youre-awesome.com">
-              <select *ngSwitchCase="1" class="form-control form-control-sm" 
-                [ngClass]="{'is-invalid': newButton.errors?.requiredType && newButton.touched}" formControlName="file">
-                <option *ngFor="let file of store.files | async" [value]="file.url">
-                  {{file.name}}
-                </option>
-              </select>
+        </div>
+        <div class="form-group mr-2">
+          <div class="input-group" [ngSwitch]="type">
+            <div class="input-group-prepend" btnRadioGroup formControlName="type">
+              <label class="btn btn-outline-primary btn-sm" btnRadio="0" tabindex="0" role="button">
+                <i class="fa fa-link"></i>
+              </label>
+              <label class="btn btn-outline-primary btn-sm" btnRadio="1" tabindex="0" role="button">
+                <i class="fa fa-file"></i>
+              </label>
             </div>
+            <input *ngSwitchCase="0" type="text" class="form-control form-control-sm"
+              [ngClass]="{'is-invalid': newButton.errors?.requiredType && newButton.touched}" formControlName="url"
+              placeholder="http://youre-awesome.com">
+            <select *ngSwitchCase="1" class="form-control form-control-sm"
+              [ngClass]="{'is-invalid': newButton.errors?.requiredType && newButton.touched}" formControlName="file">
+              <option *ngFor="let file of store.files | async" [value]="file.url">
+                {{file.name}}
+              </option>
+            </select>
           </div>
-          <div class="form-group">
-            <div class="btn-group">
-              <button class="btn btn-sm btn-outline-primary" type="button" (click)="onCancelButton()">
-                <i class="fa fa-times"></i> Cancel
-              </button>
-              <button class="btn btn-sm btn-primary" type="button" (click)="addButton()" [disabled]="newButton.invalid">
-                <i class="fa fa-plus"></i> Add button
-              </button>
-            </div>
+        </div>
+        <div class="form-group">
+          <div class="btn-group">
+            <button class="btn btn-sm btn-outline-primary" type="button" (click)="onCancelButton()">
+              <i class="fa fa-times"></i> Cancel
+            </button>
+            <button class="btn btn-sm btn-primary" type="button" (click)="addButton()" [disabled]="newButton.invalid">
+              <i class="fa fa-plus"></i> Add button
+            </button>
           </div>
         </div>
       </div>

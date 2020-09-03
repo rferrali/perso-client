@@ -1,27 +1,16 @@
-# MyApp
+# My personal website
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.0.2.
+This project was made with [Angular](https://v8.angular.io/docs) version 8.0.2 for the client, and [Fat Free Framework](https://fatfreeframework.com/3.7/home) for the server. It has a bunch of useful features for academic websites: 
 
-## Development server
+- Global management of people: add a person once, and then add it as a coauthor, instructor, ...
+- Drag and drop to reorder publications, softwares, ...
+- Easy creation of buttons and keywords
+- Sort publications into categories
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Feel free to fork the project and improve upon it!
 
-## Code scaffolding
+## Installation
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+    git clone https://github.com/rferrali/perso-client.git
+    npm install
+    ng serve --open
